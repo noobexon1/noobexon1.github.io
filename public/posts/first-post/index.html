@@ -21,18 +21,16 @@
   
   window.MANA_LANG_PREFIXES = ['en'];
 </script>
-<title>My First RE Post | </title>
+<title>Frida on Android - Hooking Native Libraries | </title>
 <meta
   name="description"
   content="
-    Some assembly I found interesting:
-push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
-
+    Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …
   
   ">
 
 
-  <meta name="keywords" content="reverse engineering, x86, malware">
+  <meta name="keywords" content="Frida, Android, Native, Hooking, Frida on Android">
 
 
 
@@ -50,24 +48,20 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
-<meta property="og:title" content="My First RE Post | ">
-<meta property="og:description" content="Some assembly I found interesting:
-push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
-">
+<meta property="og:title" content="Frida on Android - Hooking Native Libraries | ">
+<meta property="og:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …">
 <meta property="og:url" content="http://localhost:1313/posts/first-post/">
-<meta property="og:site_name" content=""><meta property="og:image" content="http://localhost:1313/images/post-cover.png">
-  <meta property="og:image:alt" content="My First RE Post | ">
+<meta property="og:site_name" content=""><meta property="og:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
+  <meta property="og:image:alt" content="Frida on Android - Hooking Native Libraries | ">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630"><meta property="article:published_time" content="2026-04-03T00:00:00Z">
   <meta
     property="article:modified_time"
-    content="2026-04-03T00:00:00Z"><meta property="article:section" content="reverse engineering"><meta property="article:tag" content="reverse engineering"><meta property="article:tag" content="x86"><meta property="article:tag" content="malware">
+    content="2026-04-03T00:00:00Z"><meta property="article:section" content="Frida"><meta property="article:tag" content="Frida"><meta property="article:tag" content="Android"><meta property="article:tag" content="Native"><meta property="article:tag" content="Hooking"><meta property="article:tag" content="Frida on Android">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="My First RE Post | ">
-<meta name="twitter:description" content="Some assembly I found interesting:
-push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
-"><meta name="twitter:image" content="http://localhost:1313/images/post-cover.png">
-  <meta name="twitter:image:alt" content="My First RE Post | ">
+<meta name="twitter:title" content="Frida on Android - Hooking Native Libraries | ">
+<meta name="twitter:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …"><meta name="twitter:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
+  <meta name="twitter:image:alt" content="Frida on Android - Hooking Native Libraries | ">
 
 
 
@@ -85,12 +79,10 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
 
 
 
-  
-
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-03T00:00:00Z","datePublished":"2026-04-03T00:00:00Z","description":"Some assembly I found interesting:\npush ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here\u0026hellip;\n","headline":"My First RE Post","image":"http://localhost:1313/images/post-cover.png","inLanguage":"en","keywords":["reverse engineering","x86","malware"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/first-post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT1M","url":"http://localhost:1313/posts/first-post/","wordCount":19}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-03T00:00:00Z","datePublished":"2026-04-03T00:00:00Z","description":"Introduction In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …","headline":"Frida on Android - Hooking Native Libraries","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/first-post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT1M","url":"http://localhost:1313/posts/first-post/","wordCount":151}</script>
 
 
 
@@ -100,7 +92,7 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
     
   
   
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"http://localhost:1313/","name":"Home","position":1},{"@type":"ListItem","item":"http://localhost:1313/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"http://localhost:1313/posts/first-post/","name":"My First RE Post","position":3}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"http://localhost:1313/","name":"Home","position":1},{"@type":"ListItem","item":"http://localhost:1313/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"http://localhost:1313/posts/first-post/","name":"Frida on Android - Hooking Native Libraries","position":3}]}</script>
 
 
 
@@ -126,12 +118,12 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
 
   <link
     rel="stylesheet"
-    href="/css/syntax-dark.min.b01037e5609e6260b74d6fcdd6d5131e8dcbc4d46d6ef4bfbe5a60bdfc1a9f30.css"
+    href="/css/syntax-dark.min.ee9d1cee2239a683e1a7680d0cf96d5532df85efaca671410b8e44b866e30542.css"
     id="syntax-dark-theme"
     class="syntax-theme">
   <link
     rel="stylesheet"
-    href="/css/syntax-light.min.9602bc2fcef52b4c62e05eae14b48ba428e114f116e993e504d83ed5a3aeda98.css"
+    href="/css/syntax-light.min.ee9d1cee2239a683e1a7680d0cf96d5532df85efaca671410b8e44b866e30542.css"
     id="syntax-light-theme"
     class="syntax-theme"
     disabled><script>
@@ -316,17 +308,6 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
 
 
 
-  <div class="post-image-single">
-    <img
-      src="/images/post-cover.png"
-      alt="
-        My First RE Post - Featured image
-      "
-      loading="eager"
-      width="1200"
-      height="630">
-  </div>
-
 
 
 
@@ -348,14 +329,14 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
     </li>
     
     <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <span itemprop="name" class="breadcrumb-current">My First RE Post</span>
+      <span itemprop="name" class="breadcrumb-current">Frida on Android - Hooking Native Libraries</span>
       <meta itemprop="position" content="3" />
     </li>
   </ol>
 </nav>
 
 
-        <h1 class="post-title-main">My First RE Post</h1>
+        <h1 class="post-title-main">Frida on Android - Hooking Native Libraries</h1>
 
         
 
@@ -383,7 +364,7 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        19 words
+        151 words
       </span>
     
 
@@ -405,11 +386,15 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
   
     <div class="post-tags">
       
-        <a href="/tags/reverse-engineering" class="post-tag">reverse engineering</a>
+        <a href="/tags/frida" class="post-tag">Frida</a>
       
-        <a href="/tags/x86" class="post-tag">x86</a>
+        <a href="/tags/android" class="post-tag">Android</a>
       
-        <a href="/tags/malware" class="post-tag">malware</a>
+        <a href="/tags/native" class="post-tag">Native</a>
+      
+        <a href="/tags/hooking" class="post-tag">Hooking</a>
+      
+        <a href="/tags/frida-on-android" class="post-tag">Frida on Android</a>
       
     </div>
   
@@ -418,12 +403,39 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
       </header>
 
       <div class="post-content-main">
-        <p>Some assembly I found interesting:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">push ebp
-</span></span><span class="line"><span class="cl">mov  ebp, esp
-</span></span><span class="line"><span class="cl">sub  esp, 0x10
-</span></span><span class="line"><span class="cl">xor  eax, eax
-</span></span></code></pre></div><p>Analysis goes here&hellip;</p>
+        <h1 id="introduction">Introduction</h1>
+<p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>.</p>
+<p>Unfortunately, I see so many online sources providing bad examples and tutorials on this subject. They either don&rsquo;t understand how Frida handles native hooks, or worse, they simply ignore the problem.</p>
+<h1 id="hook-template">Hook Template</h1>
+<h2 id="frida-snippet">Frida Snippet</h2>
+<p>Here is the complete <code>Frida</code> snippet:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ** Change to target library name... **
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">targetLibName</span> <span class="o">=</span> <span class="s2">&#34;MODULE_NAME_PLACEHOLDER&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">dlopenAddr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">getGlobalExportByName</span><span class="p">(</span><span class="s2">&#34;android_dlopen_ext&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">dlopenAddr</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">dlopenAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">loadPath</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="nx">loadPath</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">loadPath</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">targetLibName</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] </span><span class="si">${</span><span class="nx">targetLibName</span><span class="si">}</span><span class="sb"> loaded!`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1">// ** Your code goes in here... **
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span>
+</span></span></code></pre></div><p>To use it, simply modify the values as shown in the comments</p>
+<h2 id="code-breakdown">Code Breakdown</h2>
 
       </div>
 
@@ -432,11 +444,15 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
           <div class="post-tags-footer">
             <span class="tags-label">Tags:</span>
             
-              <a href="/tags/reverse-engineering" class="post-tag">reverse engineering</a>
+              <a href="/tags/frida" class="post-tag">Frida</a>
             
-              <a href="/tags/x86" class="post-tag">x86</a>
+              <a href="/tags/android" class="post-tag">Android</a>
             
-              <a href="/tags/malware" class="post-tag">malware</a>
+              <a href="/tags/native" class="post-tag">Native</a>
+            
+              <a href="/tags/hooking" class="post-tag">Hooking</a>
+            
+              <a href="/tags/frida-on-android" class="post-tag">Frida on Android</a>
             
           </div>
         </footer>
@@ -490,7 +506,17 @@ push ebp mov ebp, esp sub esp, 0x10 xor eax, eax Analysis goes here&hellip;
     </button>
     <div class="toc-content" id="toc-content">
       <nav class="toc-nav" aria-label="Table of Contents">
-        <nav id="TableOfContents"></nav>
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#hook-template">Hook Template</a>
+      <ul>
+        <li><a href="#frida-snippet">Frida Snippet</a></li>
+        <li><a href="#code-breakdown">Code Breakdown</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
       </nav>
     </div>
   </aside>

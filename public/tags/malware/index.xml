@@ -13,7 +13,7 @@
       <link>http://localhost:1313/posts/first-post/</link>
       <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/first-post/</guid>
-      <description>&lt;p&gt;Some assembly I found interesting:&lt;/p&gt;&#xA;&lt;p&gt;&lt;code&gt;``x86asm push ebp mov  ebp, esp sub  esp, 0x10 xor  eax, eax&lt;/code&gt; ``&lt;/p&gt;&#xA;&lt;p&gt;Analysis goes here&amp;hellip;&lt;/p&gt;</description>
+      <description>&lt;p&gt;Some assembly I found interesting:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;push ebp&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;mov  ebp, esp&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sub  esp, 0x10&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;xor  eax, eax&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Analysis goes here&amp;hellip;&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

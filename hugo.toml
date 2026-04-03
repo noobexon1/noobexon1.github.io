@@ -29,7 +29,7 @@ theme = "mana"
     codeFences = true
     guessSyntax = true
     noClasses = false
-    style = "catppuccin-macchiato"
+    style = "aura-theme-dark"
 
 # Output formats for search index
 [outputs]
@@ -105,13 +105,13 @@ theme = "mana"
   # Code syntax highlighting themes
   # Options: Any valid Chroma style name (e.g., "catppuccin-macchiato", "catppuccin-frappe", "github", "monokai", etc.)
   [params.codeHighlight]
-    darkTheme = "catppuccin-macchiato"
-    lightTheme = "catppuccin-frappe"
+    darkTheme  = "aura-theme-dark"
+    lightTheme = "aura-theme-dark"
 
   # Umami Analytics (optional)
   # Set your Umami website ID for page tracking
-  # [params.umami]
-  #   websiteId = "your-umami-website-id"
+  [params.umami]
+    websiteId = "871d3385-d35a-48b3-b350-eebe04544e90"
 
   [params.copyright]
     startYear = 2026
