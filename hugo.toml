@@ -77,19 +77,6 @@ theme = "mana"
     # url = "https://example.com/about-avatar.jpg"
     # assetPath = "images/about-avatar.png"
 
-  # Buy Me a Coffee Widget
-  # Set enabled = true and provide your widget ID to use the floating widget
-  # Leave enabled = false or unset to use a simple link instead
-  [params.buyMeACoffee]
-    enabled = true
-    id = "yourwidgetid"
-    message = "Buy me a coffee!"
-    color = "#BD5FFF"
-    position = "Right"
-    x_margin = "18"
-    y_margin = "18"
-  # Note: Buy Me a Coffee description is in i18n (buyMeACoffeeDescription in en.toml, es.toml, etc.)
-
   # Favicon configuration (optional)
   # Keep `params.favicon` above for simple setups; use this block if you want full control.
   # [params.favicons]
