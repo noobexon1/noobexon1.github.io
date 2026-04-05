@@ -25,7 +25,8 @@
 <meta
   name="description"
   content="
-    Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …
+    Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
+I …
   
   ">
 
@@ -49,7 +50,8 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
 <meta property="og:title" content="Frida on Android - Hooking Native Libraries | ">
-<meta property="og:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …">
+<meta property="og:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
+I …">
 <meta property="og:url" content="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/">
 <meta property="og:site_name" content=""><meta property="og:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
   <meta property="og:image:alt" content="Frida on Android - Hooking Native Libraries | ">
@@ -60,7 +62,8 @@
     content="2026-04-03T00:00:00Z"><meta property="article:section" content="Frida"><meta property="article:tag" content="Frida"><meta property="article:tag" content="Android"><meta property="article:tag" content="Native"><meta property="article:tag" content="Hooking"><meta property="article:tag" content="Frida on Android">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Frida on Android - Hooking Native Libraries | ">
-<meta name="twitter:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …"><meta name="twitter:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
+<meta name="twitter:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
+I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
   <meta name="twitter:image:alt" content="Frida on Android - Hooking Native Libraries | ">
 
 
@@ -82,7 +85,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-03T00:00:00Z","datePublished":"2026-04-03T00:00:00Z","description":"Introduction In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. …","headline":"Frida on Android - Hooking Native Libraries","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT1M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":179}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-03T00:00:00Z","datePublished":"2026-04-03T00:00:00Z","description":"Introduction In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida.\nI …","headline":"Frida on Android - Hooking Native Libraries","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":367}</script>
 
 
 
@@ -370,7 +373,7 @@
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        179 words
+        367 words
       </span>
     
 
@@ -384,7 +387,7 @@
             stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        1 min
+        2 min
       </span>
     
   </div>
@@ -411,10 +414,64 @@
       <div class="post-content-main">
         <h1 id="introduction">Introduction</h1>
 <p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>.</p>
-<p>Unfortunately, I see so many online resources providing bad examples on how to do this. They either don&rsquo;t understand how <code>Frida</code> handles native hooks, or worse, they simply ignore the problem.</p>
-<p>I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain why the method I&rsquo;m using solves them.</p>
+<p>I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&rsquo;m using solves them.</p>
 <h1 id="demo-app-overview">Demo App Overview</h1>
-<h1 id="hook-template">Hook Template</h1>
+<p>The demo application&rsquo;s source code can be found at the <a href="https://github.com/noobexon1/NativeExample">GitHub repository</a>. You can clone and build the application yourself, or you can simply download the prebuilt <code>APK</code> file from the <a href="https://github.com/noobexon1/NativeExample/releases/tag/demo">releases</a> page.</p>
+<p>Install it on your device, and let&rsquo;s breifly go over the code.</p>
+<h2 id="mainactivityjava"><code>MainActivity.java</code></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">com.noobexon.nativeexample</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">android.os.Bundle</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">android.widget.Toast</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">androidx.appcompat.app.AppCompatActivity</span><span class="p">;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">MainActivity</span><span class="w"> </span><span class="kd">extends</span><span class="w"> </span><span class="n">AppCompatActivity</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">static</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">loadLibrary</span><span class="p">(</span><span class="s">&#34;nativeexample&#34;</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">native</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">should_say_hello</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nd">@Override</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">Bundle</span><span class="w"> </span><span class="n">savedInstanceState</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">should_say_hello</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Toast</span><span class="p">.</span><span class="na">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;Hello from native!&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">Toast</span><span class="p">.</span><span class="na">LENGTH_LONG</span><span class="p">).</span><span class="na">show</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">Toast</span><span class="p">.</span><span class="na">makeText</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="s">&#34;Nope!&#34;</span><span class="p">,</span><span class="w"> </span><span class="n">Toast</span><span class="p">.</span><span class="na">LENGTH_LONG</span><span class="p">).</span><span class="na">show</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">finishAffinity</span><span class="p">();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">android</span><span class="p">.</span><span class="na">os</span><span class="p">.</span><span class="na">Process</span><span class="p">.</span><span class="na">killProcess</span><span class="p">(</span><span class="n">android</span><span class="p">.</span><span class="na">os</span><span class="p">.</span><span class="na">Process</span><span class="p">.</span><span class="na">myPid</span><span class="p">());</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
+</span></span></span></code></pre></div><ol>
+<li>App starts.</li>
+<li>Native library &ldquo;<strong><code>nativeexample.so</code></strong>&rdquo; is loaded.</li>
+<li>Boolean native function <strong><code>should_say_hello()</code></strong> is called.</li>
+<li>A toast message is displayed to the user based on the return value. If <strong><code>false</code></strong> is returned, the application is also immediately killed.</li>
+</ol>
+<h2 id="nativeexamplecpp"><code>nativeexample.cpp</code></h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;jni.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="n">JNIEXPORT</span> <span class="n">jboolean</span> <span class="n">JNICALL</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Java_com_noobexon_nativeexample_MainActivity_should_1say_1hello</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">jobject</span> <span class="n">thiz</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">JNI_FALSE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><ol>
+<li><strong><code>should_say_hello()</code></strong> is a boolean native function that always returns <strong><code>false</code></strong>.</li>
+<li>This forces the <code>Java</code> part of the application to take the same execution path every time (Kill itself).</li>
+</ol>
+<h1 id="target">Target</h1>
+<p>Our goal is to use <code>frida</code> to hook the native function <strong><code>should_say_hello()</code></strong>, so that it returns <strong><code>true</code></strong>. If we do that, a different message will be shown and the app won&rsquo;t kill itself on launch.</p>
+<h1 id="first-attempt-fail">First Attempt (Fail)</h1>
+<h1 id="second-attempt-success">Second Attempt (Success)</h1>
+<h1 id="conclusion--template">Conclusion &amp; Template</h1>
 <h2 id="frida-snippet">Frida Snippet</h2>
 <p>Here is the complete <code>Frida</code> snippet:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -517,8 +574,16 @@
         <nav id="TableOfContents">
   <ul>
     <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#demo-app-overview">Demo App Overview</a></li>
-    <li><a href="#hook-template">Hook Template</a>
+    <li><a href="#demo-app-overview">Demo App Overview</a>
+      <ul>
+        <li><a href="#mainactivityjava"><code>MainActivity.java</code></a></li>
+        <li><a href="#nativeexamplecpp"><code>nativeexample.cpp</code></a></li>
+      </ul>
+    </li>
+    <li><a href="#target">Target</a></li>
+    <li><a href="#first-attempt-fail">First Attempt (Fail)</a></li>
+    <li><a href="#second-attempt-success">Second Attempt (Success)</a></li>
+    <li><a href="#conclusion--template">Conclusion &amp; Template</a>
       <ul>
         <li><a href="#frida-snippet">Frida Snippet</a></li>
         <li><a href="#code-breakdown">Code Breakdown</a></li>

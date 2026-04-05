@@ -8,15 +8,80 @@ tags = ["Frida", "Android", "Native", "Hooking", "Frida on Android"]
 
 # Introduction
 
-In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`.
+In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`. 
 
-Unfortunately, I see so many online resources providing bad examples on how to do this. They either don't understand how `Frida` handles native hooks, or worse, they simply ignore the problem.
-
-I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain why the method I'm using solves them.
+I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I'm using solves them.
 
 # Demo App Overview
 
-# Hook Template
+The demo application's source code can be found at the [GitHub repository](https://github.com/noobexon1/NativeExample). You can clone and build the application yourself, or you can simply download the prebuilt `APK` file from the [releases](https://github.com/noobexon1/NativeExample/releases/tag/demo) page.
+
+Install it on your device, and let's breifly go over the code.
+
+## `MainActivity.java`
+
+```Java
+package com.noobexon.nativeexample;
+
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    static {
+        System.loadLibrary("nativeexample");
+    }
+
+    private native boolean should_say_hello();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (should_say_hello()) {
+            Toast.makeText(this, "Hello from native!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Nope!", Toast.LENGTH_LONG).show();
+            finishAffinity();
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
+    }
+}
+```
+
+1. App starts.
+2. Native library "**`nativeexample.so`**" is loaded.
+3. Boolean native function **`should_say_hello()`** is called.
+4. A toast message is displayed to the user based on the return value. If **`false`** is returned, the application is also immediately killed.
+
+## `nativeexample.cpp`
+
+```C
+#include <jni.h>
+
+extern "C" JNIEXPORT jboolean JNICALL
+Java_com_noobexon_nativeexample_MainActivity_should_1say_1hello(
+    JNIEnv *env,
+    jobject thiz
+) {
+    return JNI_FALSE;
+}
+```
+
+1. **`should_say_hello()`** is a boolean native function that always returns **`false`**.
+2. This forces the `Java` part of the application to take the same execution path every time (Kill itself).
+
+# Target
+
+Our goal is to use `frida` to hook the native function **`should_say_hello()`**, so that it returns **`true`**. If we do that, a different message will be shown and the app won't kill itself on launch.
+
+# First Attempt (Fail)
+
+# Second Attempt (Success)
+
+# Conclusion & Template
 
 ## Frida Snippet
 
