@@ -1,6 +1,6 @@
 +++
-title = "Frida on Android - Initial Setup"
-date = 2026-04-10
+title = "Frida on Android 0x0 - Initial Setup"
+date = 2026-04-03
 draft = false
 tags = ["Frida", "Android", "frida-server", "Frida on Android", ".zshrc"]
 image = "/images/logos/frida_on_android_logo.png"

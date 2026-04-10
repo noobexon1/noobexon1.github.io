@@ -1,16 +1,13 @@
 +++
-title = "Frida on Android - Hooking Native Libraries"
-date = 2026-04-03
+title = "Frida on Android 0x2 - Hooking Native Libraries"
+date = 2026-04-10
 draft = true
 tags = ["Frida", "Android", "Native", "Hooking", "Frida on Android"]
-#image = "/images/post-cover.png"   # optional cover image
+image = "/images/logos/frida_on_android_logo.png"
 +++
 
-# Introduction
 
-In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`. 
-
-I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I'm using solves them.
+In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I'm using solves them.
 
 # Demo App Overview
 

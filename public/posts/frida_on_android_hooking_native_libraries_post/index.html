@@ -21,12 +21,11 @@
   
   window.MANA_LANG_PREFIXES = ['en'];
 </script>
-<title>Frida on Android - Hooking Native Libraries | </title>
+<title>Frida on Android 0x2 - Hooking Native Libraries | </title>
 <meta
   name="description"
   content="
-    Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
-I …
+    In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …
   
   ">
 
@@ -49,22 +48,20 @@ I …
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
-<meta property="og:title" content="Frida on Android - Hooking Native Libraries | ">
-<meta property="og:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
-I …">
+<meta property="og:title" content="Frida on Android 0x2 - Hooking Native Libraries | ">
+<meta property="og:description" content="In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …">
 <meta property="og:url" content="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/">
-<meta property="og:site_name" content=""><meta property="og:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
-  <meta property="og:image:alt" content="Frida on Android - Hooking Native Libraries | ">
+<meta property="og:site_name" content=""><meta property="og:image" content="http://localhost:1313/images/logos/frida_on_android_logo.png">
+  <meta property="og:image:alt" content="Frida on Android 0x2 - Hooking Native Libraries | ">
   <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630"><meta property="article:published_time" content="2026-04-03T00:00:00Z">
+  <meta property="og:image:height" content="630"><meta property="article:published_time" content="2026-04-10T00:00:00Z">
   <meta
     property="article:modified_time"
-    content="2026-04-03T00:00:00Z"><meta property="article:section" content="Frida"><meta property="article:tag" content="Frida"><meta property="article:tag" content="Android"><meta property="article:tag" content="Native"><meta property="article:tag" content="Hooking"><meta property="article:tag" content="Frida on Android">
+    content="2026-04-10T00:00:00Z"><meta property="article:section" content="Frida"><meta property="article:tag" content="Frida"><meta property="article:tag" content="Android"><meta property="article:tag" content="Native"><meta property="article:tag" content="Hooking"><meta property="article:tag" content="Frida on Android">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Frida on Android - Hooking Native Libraries | ">
-<meta name="twitter:description" content="Introduction In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida.
-I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com/u/22337516?v=4">
-  <meta name="twitter:image:alt" content="Frida on Android - Hooking Native Libraries | ">
+<meta name="twitter:title" content="Frida on Android 0x2 - Hooking Native Libraries | ">
+<meta name="twitter:description" content="In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …"><meta name="twitter:image" content="http://localhost:1313/images/logos/frida_on_android_logo.png">
+  <meta name="twitter:image:alt" content="Frida on Android 0x2 - Hooking Native Libraries | ">
 
 
 
@@ -82,10 +79,12 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
 
 
 
+  
+
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-03T00:00:00Z","datePublished":"2026-04-03T00:00:00Z","description":"Introduction In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida.\nI …","headline":"Frida on Android - Hooking Native Libraries","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":367}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":366}</script>
 
 
 
@@ -95,7 +94,7 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
     
   
   
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"http://localhost:1313/","name":"Home","position":1},{"@type":"ListItem","item":"http://localhost:1313/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","name":"Frida on Android - Hooking Native Libraries","position":3}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"http://localhost:1313/","name":"Home","position":1},{"@type":"ListItem","item":"http://localhost:1313/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","name":"Frida on Android 0x2 - Hooking Native Libraries","position":3}]}</script>
 
 
 
@@ -317,6 +316,17 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
 
 
 
+  <div class="post-image-single">
+    <img
+      src="/images/logos/frida_on_android_logo.png"
+      alt="
+        Frida on Android 0x2 - Hooking Native Libraries - Featured image
+      "
+      loading="eager"
+      width="1200"
+      height="630">
+  </div>
+
 
 
 
@@ -338,20 +348,20 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
     </li>
     
     <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <span itemprop="name" class="breadcrumb-current">Frida on Android - Hooking Native Libraries</span>
+      <span itemprop="name" class="breadcrumb-current">Frida on Android 0x2 - Hooking Native Libraries</span>
       <meta itemprop="position" content="3" />
     </li>
   </ol>
 </nav>
 
 
-        <h1 class="post-title-main">Frida on Android - Hooking Native Libraries</h1>
+        <h1 class="post-title-main">Frida on Android 0x2 - Hooking Native Libraries</h1>
 
         
 
         <div class="post-meta">
   <div class="post-meta-info">
-    <time datetime="2026-04-03T00:00:00Z" class="post-date">
+    <time datetime="2026-04-10T00:00:00Z" class="post-date">
       <svg class="meta-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
           stroke-linecap="round"
@@ -359,7 +369,7 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
           stroke-width="2"
           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
       </svg>
-      April 3, 2026
+      April 10, 2026
     </time>
 
     <span class="meta-separator">•</span>
@@ -373,7 +383,7 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        367 words
+        366 words
       </span>
     
 
@@ -412,9 +422,7 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
       </header>
 
       <div class="post-content-main">
-        <h1 id="introduction">Introduction</h1>
-<p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>.</p>
-<p>I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&rsquo;m using solves them.</p>
+        <p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&rsquo;m using solves them.</p>
 <h1 id="demo-app-overview">Demo App Overview</h1>
 <p>The demo application&rsquo;s source code can be found at the <a href="https://github.com/noobexon1/NativeExample">GitHub repository</a>. You can clone and build the application yourself, or you can simply download the prebuilt <code>APK</code> file from the <a href="https://github.com/noobexon1/NativeExample/releases/tag/demo">releases</a> page.</p>
 <p>Install it on your device, and let&rsquo;s breifly go over the code.</p>
@@ -526,19 +534,33 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
       
 
 
+<section class="related-posts" aria-label="Related Posts">
+  <h2 class="related-posts-title">Related Posts</h2>
+  <ul class="related-posts-list">
+    
+    <li class="related-post-item">
+      <a href="/posts/frida_on_android_setup_post/" class="related-post-link">
+        <strong>Frida on Android 0x0 - Initial Setup</strong>
+        <span>In this first part of the Frida on Android series, we learn how to perform a basic setup to use Frida on our Android …</span>
+      </a>
+    </li>
+    
+  </ul>
+</section>
+
 
 
       <nav class="post-navigation" aria-label="Post navigation">
         
-
-        
           <a
             href="/posts/frida_on_android_setup_post/"
-            class="nav-link nav-next"
-            aria-label="Next post: Frida on Android - Initial Setup">
-            <span class="nav-label">Next</span>
-            <span class="nav-title">Frida on Android - Initial Setup</span>
+            class="nav-link nav-prev"
+            aria-label="Previous post: Frida on Android 0x0 - Initial Setup">
+            <span class="nav-label">Previous</span>
+            <span class="nav-title">Frida on Android 0x0 - Initial Setup</span>
           </a>
+        
+
         
       </nav>
     </article>
@@ -581,7 +603,6 @@ I …"><meta name="twitter:image" content="https://avatars.githubusercontent.com
       <nav class="toc-nav" aria-label="Table of Contents">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#introduction">Introduction</a></li>
     <li><a href="#demo-app-overview">Demo App Overview</a>
       <ul>
         <li><a href="#mainactivityjava"><code>MainActivity.java</code></a></li>

@@ -9,18 +9,18 @@
     <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0000</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Frida on Android - Initial Setup</title>
-      <link>http://localhost:1313/posts/frida_on_android_setup_post/</link>
+      <title>Frida on Android 0x2 - Hooking Native Libraries</title>
+      <link>http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/</link>
       <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/frida_on_android_setup_post/</guid>
-      <description>&lt;p&gt;In this first part of the &lt;strong&gt;Frida on Android&lt;/strong&gt; series, we learn how to perform a basic setup to use &lt;code&gt;Frida&lt;/code&gt; on our Android device. We start by understanding what is &lt;code&gt;Frida&lt;/code&gt; and what components are required by &lt;code&gt;Frida&lt;/code&gt; to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our &lt;code&gt;.zshrc&lt;/code&gt; (or &lt;code&gt;.bashrc&lt;/code&gt;) file.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/</guid>
+      <description>&lt;p&gt;In this part of the &lt;strong&gt;Frida on Android&lt;/strong&gt; series, I&amp;rsquo;ll show you how to &lt;strong&gt;properly&lt;/strong&gt; hook functions from Android native libraries using &lt;code&gt;Frida&lt;/code&gt;. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&amp;rsquo;m using solves them.&lt;/p&gt;&#xA;&lt;h1 id=&#34;demo-app-overview&#34;&gt;Demo App Overview&lt;/h1&gt;&#xA;&lt;p&gt;The demo application&amp;rsquo;s source code can be found at the &lt;a href=&#34;https://github.com/noobexon1/NativeExample&#34;&gt;GitHub repository&lt;/a&gt;. You can clone and build the application yourself, or you can simply download the prebuilt &lt;code&gt;APK&lt;/code&gt; file from the &lt;a href=&#34;https://github.com/noobexon1/NativeExample/releases/tag/demo&#34;&gt;releases&lt;/a&gt; page.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Frida on Android - Hooking Native Libraries</title>
-      <link>http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/</link>
+      <title>Frida on Android 0x0 - Initial Setup</title>
+      <link>http://localhost:1313/posts/frida_on_android_setup_post/</link>
       <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/</guid>
-      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;In this part of the &lt;strong&gt;Frida on Android&lt;/strong&gt; series, I&amp;rsquo;ll show you how to &lt;strong&gt;properly&lt;/strong&gt; hook functions from Android native libraries using &lt;code&gt;Frida&lt;/code&gt;.&lt;/p&gt;&#xA;&lt;p&gt;I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&amp;rsquo;m using solves them.&lt;/p&gt;&#xA;&lt;h1 id=&#34;demo-app-overview&#34;&gt;Demo App Overview&lt;/h1&gt;&#xA;&lt;p&gt;The demo application&amp;rsquo;s source code can be found at the &lt;a href=&#34;https://github.com/noobexon1/NativeExample&#34;&gt;GitHub repository&lt;/a&gt;. You can clone and build the application yourself, or you can simply download the prebuilt &lt;code&gt;APK&lt;/code&gt; file from the &lt;a href=&#34;https://github.com/noobexon1/NativeExample/releases/tag/demo&#34;&gt;releases&lt;/a&gt; page.&lt;/p&gt;</description>
+      <guid>http://localhost:1313/posts/frida_on_android_setup_post/</guid>
+      <description>&lt;p&gt;In this first part of the &lt;strong&gt;Frida on Android&lt;/strong&gt; series, we learn how to perform a basic setup to use &lt;code&gt;Frida&lt;/code&gt; on our Android device. We start by understanding what is &lt;code&gt;Frida&lt;/code&gt; and what components are required by &lt;code&gt;Frida&lt;/code&gt; to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our &lt;code&gt;.zshrc&lt;/code&gt; (or &lt;code&gt;.bashrc&lt;/code&gt;) file.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
