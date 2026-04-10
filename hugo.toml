@@ -29,7 +29,7 @@ theme = "mana"
     codeFences = true
     guessSyntax = true
     noClasses = false
-    style = "aura-theme-dark"
+    style = "catppuccin-latte"
 
 # Output formats for search index
 [outputs]
@@ -92,8 +92,8 @@ theme = "mana"
   # Code syntax highlighting themes
   # Options: Any valid Chroma style name (e.g., "catppuccin-macchiato", "catppuccin-frappe", "github", "monokai", etc.)
   [params.codeHighlight]
-    darkTheme  = "aura-theme-dark"
-    lightTheme = "aura-theme-dark"
+    darkTheme  = "catppuccin-macchiato"
+    lightTheme = "catppuccin-latte"
 
   # Umami Analytics (optional)
   # Set your Umami website ID for page tracking
