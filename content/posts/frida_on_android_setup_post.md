@@ -199,3 +199,7 @@ In the following example I demonstrate how these scripts can help me easily star
 <a href="/images/screenshots/workflow_1.png" target="_blank">
   <img src="/images/screenshots/workflow_1.png" width="100%">
 </a>
+
+## Conclusion
+
+In this post, we covered the basics of setting up `Frida` for Android security research. We installed `Frida CLI` on our host machine, deployed `Frida-Server` to a rooted Android device, verified that everything works by attaching to a running app, and set up convenient shell scripts to manage `Frida-Server` from the host. With this foundation in place, we are ready to start writing actual `Frida` scripts. 
