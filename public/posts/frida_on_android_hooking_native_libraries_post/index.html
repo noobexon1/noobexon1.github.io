@@ -84,7 +84,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":366}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":410}</script>
 
 
 
@@ -383,7 +383,7 @@
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        366 words
+        410 words
       </span>
     
 
@@ -422,11 +422,29 @@
       </header>
 
       <div class="post-content-main">
-        <p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain how the method I&rsquo;m using solves them.</p>
-<h1 id="demo-app-overview">Demo App Overview</h1>
-<p>The demo application&rsquo;s source code can be found at the <a href="https://github.com/noobexon1/NativeExample">GitHub repository</a>. You can clone and build the application yourself, or you can simply download the prebuilt <code>APK</code> file from the <a href="https://github.com/noobexon1/NativeExample/releases/tag/demo">releases</a> page.</p>
+        <p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain why and how the method I&rsquo;m using solves them.</p>
+<h2 id="demo-app-overview">Demo App Overview</h2>
+<p>The demo application&rsquo;s source code can be found at the <a href="https://github.com/noobexon1/NativeExample">GitHub repository</a>. You can clone and build the application yourself, or you can simply download the prebuilt <code>APK</code> file from the repository&rsquo;s <a href="https://github.com/noobexon1/NativeExample/releases/tag/demo">releases</a> page.</p>
 <p>Install it on your device, and let&rsquo;s breifly go over the code.</p>
-<h2 id="mainactivityjava"><code>MainActivity.java</code></h2>
+<h3 id="nativeexamplecpp"><code>nativeexample.cpp</code></h3>
+<p>This is the native code of the application. Compiled into a native library named <code>&quot;nativeexample.so&quot;</code>.</p>
+<h4 id="code">Code</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;jni.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="n">JNIEXPORT</span> <span class="n">jboolean</span> <span class="n">JNICALL</span>
+</span></span><span class="line"><span class="cl"><span class="nf">Java_com_noobexon_nativeexample_MainActivity_should_1say_1hello</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">jobject</span> <span class="n">thiz</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">JNI_FALSE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h4 id="flow">Flow</h4>
+<ol>
+<li>Declares <code>should_say_hello()</code>: a simple boolean native function that always returns <code>false</code>.</li>
+</ol>
+<h3 id="mainactivityjava"><code>MainActivity.java</code></h3>
+<p>This is the code for the main activity of the application.</p>
+<h4 id="code-1">Code</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="kn">package</span><span class="w"> </span><span class="nn">com.noobexon.nativeexample</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="kn">import</span><span class="w"> </span><span class="nn">android.os.Bundle</span><span class="p">;</span><span class="w">
@@ -455,32 +473,24 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
-</span></span></span></code></pre></div><ol>
+</span></span></span></code></pre></div><h4 id="flow-1">Flow</h4>
+<ol>
 <li>App starts.</li>
-<li>Native library &ldquo;<strong><code>nativeexample.so</code></strong>&rdquo; is loaded.</li>
-<li>Boolean native function <strong><code>should_say_hello()</code></strong> is called.</li>
-<li>A toast message is displayed to the user based on the return value. If <strong><code>false</code></strong> is returned, the application is also immediately killed.</li>
+<li>Native library <code>nativeexample.so</code> is loaded.</li>
+<li>Boolean native function <code>should_say_hello()</code> is called from <code>nativeexample.so</code>.</li>
+<li>Based on the return value:</li>
 </ol>
-<h2 id="nativeexamplecpp"><code>nativeexample.cpp</code></h2>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;jni.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">extern</span> <span class="s">&#34;C&#34;</span> <span class="n">JNIEXPORT</span> <span class="n">jboolean</span> <span class="n">JNICALL</span>
-</span></span><span class="line"><span class="cl"><span class="nf">Java_com_noobexon_nativeexample_MainActivity_should_1say_1hello</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="n">JNIEnv</span> <span class="o">*</span><span class="n">env</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="n">jobject</span> <span class="n">thiz</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">JNI_FALSE</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><ol>
-<li><strong><code>should_say_hello()</code></strong> is a boolean native function that always returns <strong><code>false</code></strong>.</li>
-<li>This forces the <code>Java</code> part of the application to take the same execution path every time (Kill itself).</li>
-</ol>
-<h1 id="target">Target</h1>
-<p>Our goal is to use <code>frida</code> to hook the native function <strong><code>should_say_hello()</code></strong>, so that it returns <strong><code>true</code></strong>. If we do that, a different message will be shown and the app won&rsquo;t kill itself on launch.</p>
-<h1 id="first-attempt-fail">First Attempt (Fail)</h1>
-<h1 id="second-attempt-success">Second Attempt (Success)</h1>
-<h1 id="conclusion--template">Conclusion &amp; Template</h1>
-<h2 id="frida-snippet">Frida Snippet</h2>
+<ul>
+<li><code>true</code> Returned  -&gt; Shows the message <code>&quot;Hello from native!&quot;</code> in a <code>Toast</code>.</li>
+<li><code>false</code> Returned -&gt; Shows the message <code>&quot;Nope!&quot;</code> in a <code>Toast</code>. The application is also immediately killed.</li>
+</ul>
+<h2 id="target">Target</h2>
+<p>As things stands now, the function <code>should_say_hello()</code> always returns <code>false</code>, making the app immediately kill itself.</p>
+<p>Our goal is to use <code>Frida</code> to hook said function, so that it returns <code>true</code>. If we manage to do that, a different message will be shown and the app won&rsquo;t kill itself on launch.</p>
+<h2 id="first-attempt-fail">First Attempt (Fail)</h2>
+<h2 id="second-attempt-success">Second Attempt (Success)</h2>
+<h2 id="conclusion--template">Conclusion &amp; Template</h2>
+<h3 id="frida-snippet">Frida Snippet</h3>
 <p>Here is the complete <code>Frida</code> snippet:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// ** Change to target library name... **
@@ -508,7 +518,7 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">})();</span>
 </span></span></code></pre></div><p>To use it, simply modify the values as shown in the comments</p>
-<h2 id="code-breakdown">Code Breakdown</h2>
+<h3 id="code-breakdown">Code Breakdown</h3>
 
       </div>
 
@@ -603,19 +613,33 @@
       <nav class="toc-nav" aria-label="Table of Contents">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#demo-app-overview">Demo App Overview</a>
+    <li>
       <ul>
-        <li><a href="#mainactivityjava"><code>MainActivity.java</code></a></li>
-        <li><a href="#nativeexamplecpp"><code>nativeexample.cpp</code></a></li>
-      </ul>
-    </li>
-    <li><a href="#target">Target</a></li>
-    <li><a href="#first-attempt-fail">First Attempt (Fail)</a></li>
-    <li><a href="#second-attempt-success">Second Attempt (Success)</a></li>
-    <li><a href="#conclusion--template">Conclusion &amp; Template</a>
-      <ul>
-        <li><a href="#frida-snippet">Frida Snippet</a></li>
-        <li><a href="#code-breakdown">Code Breakdown</a></li>
+        <li><a href="#demo-app-overview">Demo App Overview</a>
+          <ul>
+            <li><a href="#nativeexamplecpp"><code>nativeexample.cpp</code></a>
+              <ul>
+                <li><a href="#code">Code</a></li>
+                <li><a href="#flow">Flow</a></li>
+              </ul>
+            </li>
+            <li><a href="#mainactivityjava"><code>MainActivity.java</code></a>
+              <ul>
+                <li><a href="#code-1">Code</a></li>
+                <li><a href="#flow-1">Flow</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="#target">Target</a></li>
+        <li><a href="#first-attempt-fail">First Attempt (Fail)</a></li>
+        <li><a href="#second-attempt-success">Second Attempt (Success)</a></li>
+        <li><a href="#conclusion--template">Conclusion &amp; Template</a>
+          <ul>
+            <li><a href="#frida-snippet">Frida Snippet</a></li>
+            <li><a href="#code-breakdown">Code Breakdown</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
