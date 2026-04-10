@@ -3,7 +3,7 @@ title = "Frida on Android - Initial Setup"
 date = 2026-04-10
 draft = false
 tags = ["Frida", "Android", "frida-server", "Frida on Android", ".zshrc"]
-#image = "/images/post-cover.png"   # optional cover image
+image = "/images/frida_on_android_logo.png"   # optional cover image
 +++
 
 ## Introduction
