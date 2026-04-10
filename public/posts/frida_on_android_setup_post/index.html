@@ -450,7 +450,7 @@
 <li>After installation, check your installation version by running:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">frida --version
-</span></span></code></pre></div><p><img src="/images/screenshots/frida_version.png" alt="frida_version"></p>
+</span></span></code></pre></div><p><img src="/images/screenshots/initial_setup/frida_version.png" alt="frida_version"></p>
 <ol start="3">
 <li>Write this version number down. You&rsquo;ll need this to download the matching Frida-Server version.</li>
 </ol>
@@ -459,25 +459,25 @@
 <ol>
 <li>Download <code>Frida-Server</code> for your android device. The <code>Frida-Server</code> version <strong>must</strong> match the version of your <code>Frida CLI</code> on your host. You can get it in the <a href="https://github.com/frida/frida/releases">release page</a>. For example, my version is <code>17.5.2</code> so I need:</li>
 </ol>
-<p><img src="/images/screenshots/frida_server_1.png" alt="frida_server_1">
-<img src="/images/screenshots/frida_server_2.png" alt="frida_server_2"></p>
+<p><img src="/images/screenshots/initial_setup/frida_server_1.png" alt="frida_server_1">
+<img src="/images/screenshots/initial_setup/frida_server_2.png" alt="frida_server_2"></p>
 <ol start="2">
 <li>Extract the binary from the archive and change its name to <code>frida-server</code>:</li>
 </ol>
-<img src="/images/screenshots/frida_server_3.png" width="100%">
+<img src="/images/screenshots/initial_setup/frida_server_3.png" width="100%">
 <ol start="3">
 <li>Push the file into <code>/data/local/tmp/</code> on your Android device with:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">adb push frida-server /data/local/tmp
-</span></span></code></pre></div><p><img src="/images/screenshots/frida_server_4.png" alt="frida_server_4"></p>
+</span></span></code></pre></div><p><img src="/images/screenshots/initial_setup/frida_server_4.png" alt="frida_server_4"></p>
 <ol start="4">
 <li>Get into <code>adb shell</code>, navigate to <code>/data/local/tmp</code> and give execution permissions to the <code>frida-server</code> file:</li>
 </ol>
-<p><img src="/images/screenshots/frida_server_5.png" alt="frida_server_5"></p>
+<p><img src="/images/screenshots/initial_setup/frida_server_5.png" alt="frida_server_5"></p>
 <ol start="5">
 <li>I recommend reading through the <code>--help</code> output just to get yourself familiar with it:</li>
 </ol>
-<img src="/images/screenshots/frida_server_6.png" width="100%">
+<img src="/images/screenshots/initial_setup/frida_server_6.png" width="100%">
 <ol start="6">
 <li>When you are ready, start <code>Frida-Server</code> Note that you <strong>must</strong> run it as root:</li>
 </ol>
@@ -490,8 +490,8 @@
 <li>On your Android device, open any app, and then from your host&rsquo;s terminal run the following to attach <code>Frida</code> to the frontmost app:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">frida -U -F
-</span></span></code></pre></div><a href="/images/screenshots/testing_1.png" target="_blank">
-  <img src="/images/screenshots/testing_1.png" width="100%">
+</span></span></code></pre></div><a href="/images/screenshots/initial_setup/testing_1.png" target="_blank">
+  <img src="/images/screenshots/initial_setup/testing_1.png" width="100%">
 </a>
 <h2 id="workflow-scripts">Workflow Scripts</h2>
 <p>Now that you have <code>Frida-Server</code> on your Android device, you will soon find that it is annoying to always get into <code>adb shell</code> just to run the server or kill it. You can add the following functions to your <code>.zshrc</code> (or <code>.bashrc</code>) file to make your life easier:</p>
@@ -574,8 +574,8 @@
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span></code></pre></div><h3 id="example">Example</h3>
 <p>In the following example I demonstrate how these scripts can help me easily start and stop <code>frida-server</code> from my host machine without manually entering <code>adb shell</code>:</p>
-<a href="/images/screenshots/workflow_1.png" target="_blank">
-  <img src="/images/screenshots/workflow_1.png" width="100%">
+<a href="/images/screenshots/initial_setup/workflow_1.png" target="_blank">
+  <img src="/images/screenshots/initial_setup/workflow_1.png" width="100%">
 </a>
 <h2 id="conclusion">Conclusion</h2>
 <p>In this post, we covered the basics of setting up <code>Frida</code> for Android security research. We installed <code>Frida CLI</code> on our host machine, deployed <code>Frida-Server</code> to a rooted Android device, verified that everything works by attaching to a running app, and set up convenient shell scripts to manage <code>Frida-Server</code> from the host. With this foundation in place, we are ready to start writing actual <code>Frida</code> scripts.</p>

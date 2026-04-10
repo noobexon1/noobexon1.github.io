@@ -84,7 +84,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT2M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":410}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT9M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":1905}</script>
 
 
 
@@ -383,7 +383,7 @@
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        410 words
+        1905 words
       </span>
     
 
@@ -397,7 +397,7 @@
             stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        2 min
+        9 min
       </span>
     
   </div>
@@ -425,7 +425,7 @@
         <p>In this part of the <strong>Frida on Android</strong> series, I&rsquo;ll show you how to <strong>properly</strong> hook functions from Android native libraries using <code>Frida</code>. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain why and how the method I&rsquo;m using solves them.</p>
 <h2 id="demo-app-overview">Demo App Overview</h2>
 <p>The demo application&rsquo;s source code can be found at the <a href="https://github.com/noobexon1/NativeExample">GitHub repository</a>. You can clone and build the application yourself, or you can simply download the prebuilt <code>APK</code> file from the repository&rsquo;s <a href="https://github.com/noobexon1/NativeExample/releases/tag/demo">releases</a> page.</p>
-<p>Install it on your device, and let&rsquo;s breifly go over the code.</p>
+<p>Install it on your device, run it once or twice, and let&rsquo;s breifly go over the code.</p>
 <h3 id="nativeexamplecpp"><code>nativeexample.cpp</code></h3>
 <p>This is the native code of the application. Compiled into a native library named <code>&quot;nativeexample.so&quot;</code>.</p>
 <h4 id="code">Code</h4>
@@ -484,17 +484,188 @@
 <li><code>true</code> Returned  -&gt; Shows the message <code>&quot;Hello from native!&quot;</code> in a <code>Toast</code>.</li>
 <li><code>false</code> Returned -&gt; Shows the message <code>&quot;Nope!&quot;</code> in a <code>Toast</code>. The application is also immediately killed.</li>
 </ul>
-<h2 id="target">Target</h2>
+<h2 id="goal">Goal</h2>
 <p>As things stands now, the function <code>should_say_hello()</code> always returns <code>false</code>, making the app immediately kill itself.</p>
 <p>Our goal is to use <code>Frida</code> to hook said function, so that it returns <code>true</code>. If we manage to do that, a different message will be shown and the app won&rsquo;t kill itself on launch.</p>
-<h2 id="first-attempt-fail">First Attempt (Fail)</h2>
-<h2 id="second-attempt-success">Second Attempt (Success)</h2>
-<h2 id="conclusion--template">Conclusion &amp; Template</h2>
-<h3 id="frida-snippet">Frida Snippet</h3>
-<p>Here is the complete <code>Frida</code> snippet:</p>
+<h2 id="hook-requirements">Hook Requirements</h2>
+<p>To hook a function from a native library, we need to supply <code>Frida</code> with two pieces of information:</p>
+<ol>
+<li>The memory base address where the native library is loaded.</li>
+<li>The offset of the target function from that base address.</li>
+</ol>
+<p>Why? because <code>Frida</code> must know the exact place where it needs to install the hook. That exact place is the absolute memory address of the function. To get the absolute memory address of the function, we can compute the following:</p>
+<p><code>[func_absolute_addr] = [lib_base_addr] + [func_offset_from_base]</code></p>
+<p>Lucky for us, <code>Frida</code> can enumerate the application&rsquo;s memory map at runtime and give us the base address of the library for free. Therfore, all that remains for us to do is find The offset of the function from the native library base address and we are set.</p>
+<h3 id="finding-the-offset">Finding the Offset</h3>
+<p>To find the offset, your can use your preferred disassembler or decompiler to explore <code>nativeexample.so</code>:</p>
+<ol>
+<li>Open a terminal and navigate to the folder in which you downloaded the <code>apk</code> file:</li>
+</ol>
+<!-- ![frida_server_1](/images/screenshots/hooking_native_functions/offset_1.png) -->
+<img src="/images/screenshots/hooking_native_functions/offset_1.png" width="100%">
+<ol start="2">
+<li>Decompile it using <a href="https://apktool.org/">apktool</a>. You should see an output folder:</li>
+</ol>
+<img src="/images/screenshots/hooking_native_functions/offset_2.png" width="100%">
+<img src="/images/screenshots/hooking_native_functions/offset_3.png" width="100%">
+<ol start="3">
+<li>Inside of the output folder, you can find the native library at the following location:</li>
+</ol>
+<img src="/images/screenshots/hooking_native_functions/offset_4.png" width="100%">
+<ol start="4">
+<li>Open the native library in your decompiler (I&rsquo;ll be using <a href="https://binary.ninja/">Binary Ninja</a>). You should immediately see our target function. Click on it:</li>
+</ol>
+<a href="/images/screenshots/hooking_native_functions/offset_5.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/offset_5.png" width="100%">
+</a>
+<a href="/images/screenshots/hooking_native_functions/offset_6.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/offset_6.png" width="100%">
+</a>
+<ol start="5">
+<li>Make sure the decompiler is configured to show you the offset of the function from the image base:</li>
+</ol>
+<a href="/images/screenshots/hooking_native_functions/offset_7.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/offset_7.png" width="100%">
+</a>
+<ol start="6">
+<li>Once verified, the offset is as seen here:</li>
+</ol>
+<a href="/images/screenshots/hooking_native_functions/offset_8.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/offset_8.png" width="100%">
+</a>
+<h2 id="first-hook-attempt-fail">First Hook Attempt (Fail)</h2>
+<p>Now that we have the offset of the target function from the base address of the native library (<code>0x4668</code>), we can try and plug in our results to a generic native hook pattern.</p>
+<h3 id="generic-native-hook-pattern">Generic Native Hook Pattern</h3>
+<p>The following is my common pattern to hook a native function using <code>Frida</code>:</p>
+<h4 id="frida-snippet">Frida Snippet</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Javascript" data-lang="Javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">moduleName</span> <span class="o">=</span> <span class="s2">&#34;libnativeexample.so&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Native library name
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">functionName</span> <span class="o">=</span> <span class="s2">&#34;should_say_hello&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Name of the function
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">functionOffset</span> <span class="o">=</span> <span class="s2">&#34;0x4668&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- The offset we just found
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">findModuleByName</span><span class="p">(</span><span class="nx">moduleName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">targetAddr</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">functionOffset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Hook installed for [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">targetAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`-&gt; enetered [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="nx">targetAddr</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1">// Your code goes here...
+</span></span></span><span class="line"><span class="cl">            <span class="p">},</span> 
+</span></span><span class="line"><span class="cl">            <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`&lt;- leaving [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Original return value was: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">retval</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Modified to: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>   
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[!] Failed to find module&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span> 
+</span></span></code></pre></div><h4 id="code-breakdown">Code Breakdown</h4>
+<p>Let&rsquo;s understand how this <code>Frida</code> script works.</p>
+<ol>
+<li>We plug in our findings from the previous section into the constant variables:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Javascript" data-lang="Javascript"><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">moduleName</span> <span class="o">=</span> <span class="s2">&#34;libnativeexample.so&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Native library name
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">functionName</span> <span class="o">=</span> <span class="s2">&#34;should_say_hello&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Name of the function
+</span></span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">functionOffset</span> <span class="o">=</span> <span class="s2">&#34;0x4668&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- The offset we just found
+</span></span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span></code></pre></div><ol start="2">
+<li>We ask <code>Frida</code> to find the native library from the application&rsquo;s memory map at runtime. If succesful, we perform the calculation of adding the target function&rsquo;s offset to the module base address to get the function&rsquo;s absolute memory address.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Javascript" data-lang="Javascript"><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">findModuleByName</span><span class="p">(</span><span class="nx">moduleName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">targetAddr</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">functionOffset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span></code></pre></div><ol start="3">
+<li>Finally, we use <code>Frida's</code> <code>Interceptor</code> to install the hook at the calculated <code>targetAddr</code> and provide the callbacks for when we enter the function and for when we leave it. Inside the <code>onLeave</code> callback, we modify the return value from <code>0</code> to <code>1</code>, which corresponds to changing the return value from <code>false</code> to <code>true</code>.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Javascript" data-lang="Javascript"><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">targetAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`-&gt; enetered [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="nx">targetAddr</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">// Your code goes here...
+</span></span></span><span class="line"><span class="cl">    <span class="p">},</span> 
+</span></span><span class="line"><span class="cl">    <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`&lt;- leaving [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Original return value was: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">retval</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Modified to: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span></code></pre></div><h3 id="testing-the-hook">Testing the Hook</h3>
+<p>All that is left to do is run the script on the target application and see if it works.</p>
+<ol>
+<li>In the same folder where you put the <code>apk</code>, crate a file named <code>script.js</code> and paste our <code>Frida</code> code snippet in it:</li>
+</ol>
+<a href="/images/screenshots/hooking_native_functions/first_hook_1.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/first_hook_1.png" width="100%">
+</a>
+<ol start="2">
+<li>Run <code>frida-server</code> if you hadn&rsquo;t already:</li>
+</ol>
+<img src="/images/screenshots/hooking_native_functions/first_hook_2.png" width="100%">
+<ol start="3">
+<li>Get the package name of our demo application using <code>Frida</code>:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">frida-ps -Uai
+</span></span></code></pre></div><a href="/images/screenshots/hooking_native_functions/first_hook_3.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/first_hook_3.png" width="100%">
+</a>
+<ol start="4">
+<li>Finally, make <code>Frida</code> spawn the target application and immediately execute our <code>script.js</code> file:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">frida -U -f com.noobexon.nativeexample -l script.js
+</span></span></code></pre></div><p>As you may have already guessed from this post&rsquo;s titles, our script fails. But why?</p>
+<img src="/images/screenshots/hooking_native_functions/first_hook_4.png" width="100%">
+<h2 id="what-went-wrong">What went wrong?</h2>
+<h3 id="the-problem">The problem</h3>
+<p>To understand what went wrong, we just need to read the output from <code>Frida</code>:</p>
+<img src="/images/screenshots/hooking_native_functions/first_hook_5.png" width="100%">
+<p>In fact, if we take a closer look at our code in <code>script.js</code>, we can see that this message is actually from our logs:</p>
+<img src="/images/screenshots/hooking_native_functions/first_hook_6.png" width="100%">
+<p>And if we zoom further in on the issue, we can see that it stemed from this part of the code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">findModuleByName</span><span class="p">(</span><span class="nx">moduleName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[!] Failed to find module&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span></code></pre></div><p>This means <code>Frida</code> couldn&rsquo;t find the native library in memory and therfore returned <code>null</code>&hellip; But why? After all, if we run the application without <code>Frida</code>, then we do see that everything works perfectly, so the native library must have beed loaded <strong>at some point</strong>, right?</p>
+<p>And that is exactly the problem here. <code>Frida</code> is fast. Very fast. The moment we run the command in our shell, it immediately tries to install the hook as fast as possible, even before the application had a chance to load the native library to memory, <strong>And <code>Frida</code> can&rsquo;t find the library in memory if it hasn&rsquo;t been loaded yet.</strong></p>
+<p>So what can we do?..</p>
+<p>Well, our problem is in fact a <strong>timing issue</strong>. <code>Frida</code> attempts to hook the native library before it has been loaded to memory, and therfore fails. If we can somehow tell <code>Frida</code> <strong>when</strong> it needs to install the hook, then our problems will be solved. And that is exactly what we are going to do!</p>
+<h3 id="the-solution">The solution</h3>
+<p>How can we let <code>Frida</code> know for sure that the library is loaded and that its now ok to install the hook? There are many solutions out there, but most of them are based on busy-wait which has many downsides (Making <code>Frida</code> constantly check the memory map every couple milliseconds untill it confirms that the target library has been loaded to memory).</p>
+<p>We will take a different approach. To know <strong>when</strong> our target library has been loaded to memory, we can hook the function the actually loads libraries to memory. This function is called <code>android_dlopen_ext</code> and it takes the path of the library to be loaded as its first argument.</p>
+<p>Modify the contents of <code>script.js</code> with the following and run the same command:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">// ** Change to target library name... **
-</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">targetLibName</span> <span class="o">=</span> <span class="s2">&#34;MODULE_NAME_PLACEHOLDER&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">dlopenAddr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">getGlobalExportByName</span><span class="p">(</span><span class="s2">&#34;android_dlopen_ext&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">dlopenAddr</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">dlopenAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">loadPath</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] loading </span><span class="si">${</span><span class="nx">loadPath</span><span class="si">}</span><span class="sb">!`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span>
+</span></span></code></pre></div><p>This snippet will print every library being dynamically loaded:</p>
+<img src="/images/screenshots/hooking_native_functions/explain_1.png" width="100%">
+<p>Therfore, we can use the following hook as a mechanisem to let <code>Frida</code> know <strong>when</strong> to instal the hook:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">targetLibName</span> <span class="o">=</span> <span class="s2">&#34;libnativeexample.so&#34;</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">dlopenAddr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">getGlobalExportByName</span><span class="p">(</span><span class="s2">&#34;android_dlopen_ext&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">dlopenAddr</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
@@ -517,9 +688,130 @@
 </span></span><span class="line"><span class="cl">        <span class="p">});</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">})();</span>
-</span></span></code></pre></div><p>To use it, simply modify the values as shown in the comments</p>
-<h3 id="code-breakdown">Code Breakdown</h3>
-
+</span></span></code></pre></div><p>Modify the contents of <code>script.js</code> to include the above snippet, and run. The script prints exactly when is the time that the target library has been loaded:</p>
+<img src="/images/screenshots/hooking_native_functions/explain_2.png" width="100%">
+<h2 id="second-attempt-success">Second Attempt (Success)</h2>
+<p>Now that we figured out the solution to the timing problem, all we have to do is take our original script and compose it over our timing mechanism</p>
+<a href="/images/screenshots/hooking_native_functions/second_hook_1.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/second_hook_1.png" width="100%">
+</a>
+<h3 id="frida-snippet-1">Frida Snippet</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">targetLibName</span> <span class="o">=</span> <span class="s2">&#34;libnativeexample.so&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">dlopenAddr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">getGlobalExportByName</span><span class="p">(</span><span class="s2">&#34;android_dlopen_ext&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">dlopenAddr</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">dlopenAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">loadPath</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="nx">loadPath</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">loadPath</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">targetLibName</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] </span><span class="si">${</span><span class="nx">targetLibName</span><span class="si">}</span><span class="sb"> loaded!`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1">// ------- ORIGINAL HOOK ---------------
+</span></span></span><span class="line"><span class="cl">                    <span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="kr">const</span> <span class="nx">moduleName</span> <span class="o">=</span> <span class="s2">&#34;libnativeexample.so&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">                        <span class="kr">const</span> <span class="nx">functionName</span> <span class="o">=</span> <span class="s2">&#34;should_say_hello&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">                        <span class="kr">const</span> <span class="nx">functionOffset</span> <span class="o">=</span> <span class="s2">&#34;0x4668&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                        <span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">findModuleByName</span><span class="p">(</span><span class="nx">moduleName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="kr">const</span> <span class="nx">targetAddr</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">functionOffset</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Hook installed for [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">targetAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`-&gt; enetered [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="nx">targetAddr</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                                    <span class="c1">// Your code goes here...
+</span></span></span><span class="line"><span class="cl">                                <span class="p">},</span> 
+</span></span><span class="line"><span class="cl">                                <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`&lt;- leaving [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Original return value was: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                    <span class="nx">retval</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Modified to: </span><span class="si">${</span><span class="nx">retval</span><span class="p">.</span><span class="nx">toInt32</span><span class="p">()</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                            <span class="p">});</span>   
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[!] Failed to find module&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">})();</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1">// ----------------------------------
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span>
+</span></span></code></pre></div><h3 id="testing-the-hook-1">Testing the Hook</h3>
+<p>As expected, everything works now and the app no longer crashes!</p>
+<a href="/images/screenshots/hooking_native_functions/second_hook_2.png" target="_blank">
+  <img src="/images/screenshots/hooking_native_functions/second_hook_2.png" width="100%">
+</a>
+<h2 id="conclusion--template">Conclusion &amp; Template</h2>
+<h3 id="templates-you-should-save">Templates You Should Save</h3>
+<h4 id="android_dlopen_ext-hook"><code>android_dlopen_ext</code> Hook</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// ** Change to target library name... **
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">targetLibName</span> <span class="o">=</span> <span class="s2">&#34;[MODULE_NAME_PLACEHOLDER]&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">dlopenAddr</span> <span class="o">=</span> <span class="nx">Module</span><span class="p">.</span><span class="nx">getGlobalExportByName</span><span class="p">(</span><span class="s2">&#34;android_dlopen_ext&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">dlopenAddr</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">dlopenAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kr">const</span> <span class="nx">loadPath</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">readCString</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="nx">loadPath</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">loadPath</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">targetLibName</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] </span><span class="si">${</span><span class="nx">targetLibName</span><span class="si">}</span><span class="sb"> loaded!`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="c1">// ** Your code goes in here... **
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="k">this</span><span class="p">.</span><span class="nx">isTarget</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span>
+</span></span></code></pre></div><h4 id="generic-native-hook">Generic Native Hook</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">moduleName</span> <span class="o">=</span> <span class="s2">&#34;[MODULE_NAME_PLACEHOLDER]&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Change to target library name... 
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">functionRelativeAddress</span> <span class="o">=</span> <span class="s2">&#34;[FUNCTION_RELATIVE_ADDRESS_PLACEHOLDER]&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Change to function offset from the library base address... 
+</span></span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">functionName</span> <span class="o">=</span> <span class="s2">&#34;[FUNCTION_NAME_PLACEHOLDER]&#34;</span><span class="p">;</span> <span class="c1">// &lt;-- Change to target function name... 
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">module</span> <span class="o">=</span> <span class="nx">Process</span><span class="p">.</span><span class="nx">findModuleByName</span><span class="p">(</span><span class="nx">moduleName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="nx">module</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kr">const</span> <span class="nx">targetAddr</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">base</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">functionRelativeAddress</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[+] Hook installed for [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">Interceptor</span><span class="p">.</span><span class="nx">attach</span><span class="p">(</span><span class="nx">targetAddr</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">onEnter</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">args</span><span class="p">)</span> <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`-&gt; enetered [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="nx">targetAddr</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1">// Your code goes here...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="p">},</span> 
+</span></span><span class="line"><span class="cl">            <span class="nx">onLeave</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">retval</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`&lt;- leaving [</span><span class="si">${</span><span class="nx">functionName</span><span class="si">}</span><span class="sb">] at [</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">.</span><span class="nx">pc</span><span class="si">}</span><span class="sb">]`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">                <span class="c1">// Your code goes here...
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">});</span>   
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;[!] Failed to find module&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">})();</span> 
+</span></span></code></pre></div>
       </div>
 
       
@@ -631,13 +923,43 @@
             </li>
           </ul>
         </li>
-        <li><a href="#target">Target</a></li>
-        <li><a href="#first-attempt-fail">First Attempt (Fail)</a></li>
-        <li><a href="#second-attempt-success">Second Attempt (Success)</a></li>
+        <li><a href="#goal">Goal</a></li>
+        <li><a href="#hook-requirements">Hook Requirements</a>
+          <ul>
+            <li><a href="#finding-the-offset">Finding the Offset</a></li>
+          </ul>
+        </li>
+        <li><a href="#first-hook-attempt-fail">First Hook Attempt (Fail)</a>
+          <ul>
+            <li><a href="#generic-native-hook-pattern">Generic Native Hook Pattern</a>
+              <ul>
+                <li><a href="#frida-snippet">Frida Snippet</a></li>
+                <li><a href="#code-breakdown">Code Breakdown</a></li>
+              </ul>
+            </li>
+            <li><a href="#testing-the-hook">Testing the Hook</a></li>
+          </ul>
+        </li>
+        <li><a href="#what-went-wrong">What went wrong?</a>
+          <ul>
+            <li><a href="#the-problem">The problem</a></li>
+            <li><a href="#the-solution">The solution</a></li>
+          </ul>
+        </li>
+        <li><a href="#second-attempt-success">Second Attempt (Success)</a>
+          <ul>
+            <li><a href="#frida-snippet-1">Frida Snippet</a></li>
+            <li><a href="#testing-the-hook-1">Testing the Hook</a></li>
+          </ul>
+        </li>
         <li><a href="#conclusion--template">Conclusion &amp; Template</a>
           <ul>
-            <li><a href="#frida-snippet">Frida Snippet</a></li>
-            <li><a href="#code-breakdown">Code Breakdown</a></li>
+            <li><a href="#templates-you-should-save">Templates You Should Save</a>
+              <ul>
+                <li><a href="#android_dlopen_ext-hook"><code>android_dlopen_ext</code> Hook</a></li>
+                <li><a href="#generic-native-hook">Generic Native Hook</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
       </ul>

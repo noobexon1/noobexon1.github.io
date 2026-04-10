@@ -48,7 +48,7 @@ pip install frida-tools
 frida --version
 ```
 
-![frida_version](/images/screenshots/frida_version.png)
+![frida_version](/images/screenshots/initial_setup/frida_version.png)
 
 3. Write this version number down. You'll need this to download the matching Frida-Server version.
 
@@ -58,12 +58,12 @@ We need to download `Frida-Server` from the GitHub repository of `Frida` and tra
 
 1. Download `Frida-Server` for your android device. The `Frida-Server` version **must** match the version of your `Frida CLI` on your host. You can get it in the [release page](https://github.com/frida/frida/releases). For example, my version is `17.5.2` so I need:
 
-![frida_server_1](/images/screenshots/frida_server_1.png)
-![frida_server_2](/images/screenshots/frida_server_2.png)
+![frida_server_1](/images/screenshots/initial_setup/frida_server_1.png)
+![frida_server_2](/images/screenshots/initial_setup/frida_server_2.png)
 
 2. Extract the binary from the archive and change its name to `frida-server`:
 
-<img src="/images/screenshots/frida_server_3.png" width="100%">
+<img src="/images/screenshots/initial_setup/frida_server_3.png" width="100%">
 
 3. Push the file into `/data/local/tmp/` on your Android device with:
 
@@ -71,15 +71,15 @@ We need to download `Frida-Server` from the GitHub repository of `Frida` and tra
 adb push frida-server /data/local/tmp
 ```
 
-![frida_server_4](/images/screenshots/frida_server_4.png)
+![frida_server_4](/images/screenshots/initial_setup/frida_server_4.png)
 
 4. Get into `adb shell`, navigate to `/data/local/tmp` and give execution permissions to the `frida-server` file:
 
-![frida_server_5](/images/screenshots/frida_server_5.png)
+![frida_server_5](/images/screenshots/initial_setup/frida_server_5.png)
 
 5. I recommend reading through the `--help` output just to get yourself familiar with it:
 
-<img src="/images/screenshots/frida_server_6.png" width="100%">
+<img src="/images/screenshots/initial_setup/frida_server_6.png" width="100%">
 
 
 6. When you are ready, start `Frida-Server` Note that you **must** run it as root:
@@ -100,8 +100,8 @@ To test that everything works, do the following:
 frida -U -F
 ```
 
-<a href="/images/screenshots/testing_1.png" target="_blank">
-  <img src="/images/screenshots/testing_1.png" width="100%">
+<a href="/images/screenshots/initial_setup/testing_1.png" target="_blank">
+  <img src="/images/screenshots/initial_setup/testing_1.png" width="100%">
 </a>
 
 ## Workflow Scripts
@@ -199,8 +199,8 @@ function kfs() {
 
 In the following example I demonstrate how these scripts can help me easily start and stop `frida-server` from my host machine without manually entering `adb shell`:
 
-<a href="/images/screenshots/workflow_1.png" target="_blank">
-  <img src="/images/screenshots/workflow_1.png" width="100%">
+<a href="/images/screenshots/initial_setup/workflow_1.png" target="_blank">
+  <img src="/images/screenshots/initial_setup/workflow_1.png" width="100%">
 </a>
 
 ## Conclusion
