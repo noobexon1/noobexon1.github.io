@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Frida-Server on </title>
+    <link>http://localhost:1313/tags/frida-server/</link>
+    <description>Recent content in Frida-Server on </description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/frida-server/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Frida on Android - Initial Setup</title>
+      <link>http://localhost:1313/posts/frida_on_android_setup_post/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/frida_on_android_setup_post/</guid>
+      <description>&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;&#xA;&lt;p&gt;In this first part of the &lt;strong&gt;Frida on Android&lt;/strong&gt; series, we learn how to perform a basic setup to use &lt;code&gt;Frida&lt;/code&gt; on our Android device. We start by understanding what is &lt;code&gt;Frida&lt;/code&gt; and what are the components required used by &lt;code&gt;Frida&lt;/code&gt; to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our &lt;code&gt;.zshrc&lt;/code&gt; (or &lt;code&gt;.bashrc&lt;/code&gt;) file.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

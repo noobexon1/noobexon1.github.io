@@ -1,0 +1,4 @@
+/* Inline code styling (backticks in markdown) - excludes code blocks */
+.post-content-main code:not(pre code) {
+  color: #e74c3c;
+}
