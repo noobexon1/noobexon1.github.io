@@ -84,7 +84,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"Introduction In this first part of the Frida on Android series, we learn how to perform a basic setup to use Frida on our Android device. We start by …","headline":"Frida on Android - Initial Setup","image":"http://localhost:1313/images/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","frida-server","Frida on Android",".zshrc"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_setup_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT5M","url":"http://localhost:1313/posts/frida_on_android_setup_post/","wordCount":940}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"Introduction In this first part of the Frida on Android series, we learn how to perform a basic setup to use Frida on our Android device. We start by …","headline":"Frida on Android - Initial Setup","image":"http://localhost:1313/images/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","frida-server","Frida on Android",".zshrc"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_setup_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT5M","url":"http://localhost:1313/posts/frida_on_android_setup_post/","wordCount":963}</script>
 
 
 
@@ -383,7 +383,7 @@
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        940 words
+        963 words
       </span>
     
 
@@ -424,6 +424,11 @@
       <div class="post-content-main">
         <h2 id="introduction">Introduction</h2>
 <p>In this first part of the <strong>Frida on Android</strong> series, we learn how to perform a basic setup to use <code>Frida</code> on our Android device. We start by understanding what is <code>Frida</code> and what components are required by <code>Frida</code> to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our <code>.zshrc</code> (or <code>.bashrc</code>) file.</p>
+<h3 id="prerequisites">Prerequisites</h3>
+<ol>
+<li>A rooted Android device (with <code>adb</code> enabled via the developer options).</li>
+<li>USB cable to connect your Android device to your host machine.</li>
+</ol>
 <h3 id="what-is-frida">What is Frida?</h3>
 <p><a href="https://frida.re/">Frida</a> is a dynamic instrumentation toolkit that lets you hook into and modify apps logic at runtime. It is especially popular in Android security research because of its straightforward Java method hooking. Of course, native code hooking is also quite simple.</p>
 <p>It allows researchers to bypass SSL pinning, root detection, and authentication logic, intercept network traffic, and inspect app behavior live, making it the go-to tool for mobile penetration testing and reverse engineering.</p>
@@ -673,6 +678,7 @@
       <ul>
         <li><a href="#introduction">Introduction</a>
           <ul>
+            <li><a href="#prerequisites">Prerequisites</a></li>
             <li><a href="#what-is-frida">What is Frida?</a></li>
             <li><a href="#frida-for-android">Frida for Android</a></li>
           </ul>
