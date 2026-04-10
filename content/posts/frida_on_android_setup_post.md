@@ -3,19 +3,17 @@ title = "Frida on Android - Initial Setup"
 date = 2026-04-10
 draft = false
 tags = ["Frida", "Android", "frida-server", "Frida on Android", ".zshrc"]
-image = "/images/frida_on_android_logo.png"
+image = "/images/logos/frida_on_android_logo.png"
 +++
-
-## Introduction
 
 In this first part of the **Frida on Android** series, we learn how to perform a basic setup to use `Frida` on our Android device. We start by understanding what is `Frida` and what components are required by `Frida` to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our `.zshrc` (or `.bashrc`) file.
 
-### Prerequisites
+## Prerequisites
 
 1. A rooted Android device (with `adb` enabled via the developer options).
 2. USB cable to connect your Android device to your host machine.
 
-### What is Frida?
+## What is Frida?
 
 [Frida](https://frida.re/) is a dynamic instrumentation toolkit that lets you hook into and modify apps logic at runtime. It is especially popular in Android security research because of its straightforward Java method hooking. Of course, native code hooking is also quite simple.
 
