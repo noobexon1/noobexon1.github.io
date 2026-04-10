@@ -82,7 +82,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"Introduction In this first part of the Frida on Android series, we learn how to perform a basic setup to use Frida on our Android device. We start by …","headline":"Frida on Android - Initial Setup","inLanguage":"en","keywords":["Frida","Android","frida-server","Frida on Android",".zshrc"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_setup_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT3M","url":"http://localhost:1313/posts/frida_on_android_setup_post/","wordCount":493}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"Introduction In this first part of the Frida on Android series, we learn how to perform a basic setup to use Frida on our Android device. We start by …","headline":"Frida on Android - Initial Setup","inLanguage":"en","keywords":["Frida","Android","frida-server","Frida on Android",".zshrc"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_setup_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT5M","url":"http://localhost:1313/posts/frida_on_android_setup_post/","wordCount":873}</script>
 
 
 
@@ -370,7 +370,7 @@
             stroke-width="2"
             d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
         </svg>
-        493 words
+        873 words
       </span>
     
 
@@ -384,7 +384,7 @@
             stroke-width="2"
             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        3 min
+        5 min
       </span>
     
   </div>
@@ -409,24 +409,24 @@
       </header>
 
       <div class="post-content-main">
-        <h1 id="introduction">Introduction</h1>
-<p>In this first part of the <strong>Frida on Android</strong> series, we learn how to perform a basic setup to use <code>Frida</code> on our Android device. We start by understanding what is <code>Frida</code> and what are the components required used by <code>Frida</code> to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our <code>.zshrc</code> (or <code>.bashrc</code>) file.</p>
-<h2 id="what-is-frida">What is Frida?</h2>
-<p><a href="https://frida.re/">Frida</a> is a dynamic instrumentation toolkit that lets you hook into and modify apps logic at runtime. It is especially popular in Android security research because of its straightsorward Java method hooking. Of course, native code hooking is also quite simple.</p>
-<p>It allows researchers to bypass SSL pinning, root detection, and authentication logic, intercept network traffic, and inspect app behavior live, all making it the go-to tool for mobile penetration testing and reverse engineering.</p>
-<h2 id="frida-for-android">Frida for Android</h2>
-<p>There is more then one way to use <code>Frida</code> on Android, but in this guide I&rsquo;ll show the most common setup which uses the following:</p>
+        <h2 id="introduction">Introduction</h2>
+<p>In this first part of the <strong>Frida on Android</strong> series, we learn how to perform a basic setup to use <code>Frida</code> on our Android device. We start by understanding what is <code>Frida</code> and what components are required by <code>Frida</code> to properly run on Android. Then, we proceed to perform the actual setup of said components. Finally, we make our workflow faster by embedding custom shell commands in our <code>.zshrc</code> (or <code>.bashrc</code>) file.</p>
+<h3 id="what-is-frida">What is Frida?</h3>
+<p><a href="https://frida.re/">Frida</a> is a dynamic instrumentation toolkit that lets you hook into and modify apps logic at runtime. It is especially popular in Android security research because of its straightforward Java method hooking. Of course, native code hooking is also quite simple.</p>
+<p>It allows researchers to bypass SSL pinning, root detection, and authentication logic, intercept network traffic, and inspect app behavior live, making it the go-to tool for mobile penetration testing and reverse engineering.</p>
+<h3 id="frida-for-android">Frida for Android</h3>
+<p>There is more than one way to use <code>Frida</code> on Android, but in this guide I&rsquo;ll show the most common setup which uses the following:</p>
 <ol>
 <li>A host machine running <code>Frida CLI</code> (I&rsquo;ll be using a <a href="https://www.kali.org/">kali-linux</a> VM as the host).</li>
 <li>A rooted Android device running a <code>Frida-Server</code>.</li>
 </ol>
 <p><img src="/images/diagrams/frida_architecture.svg" alt="frida_architecture_diagram"></p>
 <p>As seen in the diagram, <code>Frida-Server</code> is running on the Android device itself. Its main responsibilities are to install hooks into the target app, as well as communicate and transfer data to the <code>Frida CLI</code> which runs on the host machine.</p>
-<h1 id="setting-up">Setting Up</h1>
-<h2 id="host-machine">Host Machine</h2>
+<h2 id="setting-up">Setting Up</h2>
+<h3 id="host-machine">Host Machine</h3>
 <p>We need to install <code>Frida CLI</code> on our host machine.</p>
 <ol>
-<li>Open a terminal on you host machine and install <code>Frida CLI</code> using <code>pip</code>:</li>
+<li>Open a terminal on your host machine and install <code>Frida CLI</code> using <code>pip</code>:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">pip install frida-tools
 </span></span></code></pre></div><ol start="2">
@@ -435,12 +435,12 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">frida --version
 </span></span></code></pre></div><p><img src="/images/screenshots/frida_version.png" alt="frida_version"></p>
 <ol start="3">
-<li>Write this version number down. We will need it in the next step.</li>
+<li>Write this version number down. You&rsquo;ll need this to download the matching Frida-Server version.</li>
 </ol>
-<h2 id="android-device">Android Device</h2>
+<h3 id="android-device">Android Device</h3>
 <p>We need to download <code>Frida-Server</code> from the GitHub repository of <code>Frida</code> and transfer it to the rooted Android device.</p>
 <ol>
-<li>Download <code>Frida-Server</code> for your android device. The <code>Frida-Server</code> version <strong>must</strong> match the version of your <code>Frida CLI</code> on your host. You can get it in the <a href="">release page</a>. For example, my version is <code>17.5.2</code> so I need:</li>
+<li>Download <code>Frida-Server</code> for your android device. The <code>Frida-Server</code> version <strong>must</strong> match the version of your <code>Frida CLI</code> on your host. You can get it in the <a href="https://github.com/frida/frida/releases">release page</a>. For example, my version is <code>17.5.2</code> so I need:</li>
 </ol>
 <p><img src="/images/screenshots/frida_server_1.png" alt="frida_server_1">
 <img src="/images/screenshots/frida_server_2.png" alt="frida_server_2"></p>
@@ -462,19 +462,103 @@
 </ol>
 <img src="/images/screenshots/frida_server_6.png" width="100%">
 <ol start="6">
-<li>When you are ready, start <code>Fride-Server</code> with:</li>
+<li>When you are ready, start <code>Frida-Server</code> Note that you <strong>must</strong> run it as root:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">./frida-server
-</span></span></code></pre></div><h2 id="testing-the-setup">Testing the Setup</h2>
-<p>To test that everything works do the following:</p>
+</span></span></code></pre></div><h3 id="testing-the-setup">Testing the Setup</h3>
+<p>To test that everything works, do the following:</p>
 <ol>
 <li>Make sure <code>Frida-Server</code> is running (If your terminal is still up from the last stage, then it is).</li>
 <li>Make sure your Android device is connected to your host machine via USB cable (Again, this should already be the case).</li>
-<li>On you Android device, open any app, and then from your host&rsquo;s terminal run the following to attach <code>Frida</code> to the frontmost app:</li>
+<li>On your Android device, open any app, and then from your host&rsquo;s terminal run the following to attach <code>Frida</code> to the frontmost app:</li>
 </ol>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">frida -U -F
 </span></span></code></pre></div><a href="/images/screenshots/testing_1.png" target="_blank">
   <img src="/images/screenshots/testing_1.png" width="100%">
+</a>
+<h2 id="workflow-scripts">Workflow Scripts</h2>
+<p>Now that you have <code>Frida-Server</code> on your Android device, you will soon find that it is annoying to always get into <code>adb shell</code> just to run the server or kill it. You can add the following functions to your <code>.zshrc</code> (or <code>.bashrc</code>) file to make your life easier:</p>
+<h3 id="start-frida-server">Start frida-server</h3>
+<p>Run from your host machine. Starts <code>frida-server</code> as a background process on your Android device.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="k">function</span> fs<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">server</span><span class="o">=</span><span class="s2">&#34;frida-server&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Checking </span><span class="nv">$server</span><span class="s2"> status...&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> adb shell <span class="s2">&#34;su -c &#39;pidof </span><span class="nv">$server</span><span class="s2">&#39;&#34;</span> <span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$server</span><span class="s2"> is already running.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Starting </span><span class="nv">$server</span><span class="s2">...&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> adb shell <span class="s2">&#34;su -c &#39;/data/local/tmp/</span><span class="nv">$server</span><span class="s2"> &gt;/dev/null 2&gt;&amp;1 &amp;&#39;&#34;</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$server</span><span class="s2"> start command sent successfully.&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            sleep <span class="m">1</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># Re-check status to confirm server is actually running</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> adb shell <span class="s2">&#34;su -c &#39;pidof </span><span class="nv">$server</span><span class="s2">&#39;&#34;</span> <span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$server</span><span class="s2"> is now running.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$server</span><span class="s2"> does not appear in process list. Is </span><span class="nv">$server</span><span class="s2"> on device?&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Failed to send </span><span class="nv">$server</span><span class="s2"> start command via adb.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Ensure adb is connected, device is rooted, and </span><span class="nv">$server</span><span class="s2"> is at /data/local/tmp with execute permissions.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h3 id="kill-frida-server">Kill frida-server</h3>
+<p>Run from your host machine. Kills any running <code>frida-server</code> instances on your device.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="k">function</span> kfs<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Checking for running Frida-related processes...&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">procs</span><span class="o">=(</span><span class="s2">&#34;frida-server&#34;</span> <span class="s2">&#34;re.frida.helper&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">found_any</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> proc in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">procs</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">local</span> <span class="nv">pids</span><span class="o">=</span><span class="k">$(</span>adb shell <span class="s2">&#34;su -c &#39;pidof </span><span class="nv">$proc</span><span class="s2">&#39;&#34;</span> 2&gt;/dev/null <span class="p">|</span> tr -d <span class="s1">&#39;\r&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[[</span> -z <span class="s2">&#34;</span><span class="nv">$pids</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;• </span><span class="nv">$proc</span><span class="s2"> is not running.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="nv">found_any</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;• Found </span><span class="nv">$proc</span><span class="s2"> with PIDs: </span><span class="nv">$pids</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> pid in <span class="nv">$pids</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;  → Killing </span><span class="nv">$proc</span><span class="s2"> (PID </span><span class="nv">$pid</span><span class="s2">)...&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> adb shell <span class="s2">&#34;su -c &#39;kill -9 </span><span class="nv">$pid</span><span class="s2">&#39;&#34;</span> <span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;    ✓ Killed </span><span class="nv">$proc</span><span class="s2"> (PID </span><span class="nv">$pid</span><span class="s2">)&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;    ✗ Failed to kill </span><span class="nv">$proc</span><span class="s2"> (PID </span><span class="nv">$pid</span><span class="s2">)&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">        <span class="k">done</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$found_any</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="nb">false</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;No Frida-related processes were running.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">still_running</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> proc in <span class="s2">&#34;</span><span class="si">${</span><span class="nv">procs</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> adb shell <span class="s2">&#34;su -c &#39;pidof </span><span class="nv">$proc</span><span class="s2">&#39;&#34;</span> <span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Warning: </span><span class="nv">$proc</span><span class="s2"> may still be running.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">still_running</span><span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="nv">$still_running</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="nb">false</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;All Frida-related processes appear to be terminated.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span></code></pre></div><h3 id="example">Example</h3>
+<p>In the following example I demonstrate how these scripts can help me easily start and stop <code>frida-server</code> from my host machine without manually entering <code>adb shell</code>:</p>
+<a href="/images/screenshots/workflow_1.png" target="_blank">
+  <img src="/images/screenshots/workflow_1.png" width="100%">
 </a>
       </div>
 
@@ -569,17 +653,28 @@
       <nav class="toc-nav" aria-label="Table of Contents">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#introduction">Introduction</a>
+    <li>
       <ul>
-        <li><a href="#what-is-frida">What is Frida?</a></li>
-        <li><a href="#frida-for-android">Frida for Android</a></li>
-      </ul>
-    </li>
-    <li><a href="#setting-up">Setting Up</a>
-      <ul>
-        <li><a href="#host-machine">Host Machine</a></li>
-        <li><a href="#android-device">Android Device</a></li>
-        <li><a href="#testing-the-setup">Testing the Setup</a></li>
+        <li><a href="#introduction">Introduction</a>
+          <ul>
+            <li><a href="#what-is-frida">What is Frida?</a></li>
+            <li><a href="#frida-for-android">Frida for Android</a></li>
+          </ul>
+        </li>
+        <li><a href="#setting-up">Setting Up</a>
+          <ul>
+            <li><a href="#host-machine">Host Machine</a></li>
+            <li><a href="#android-device">Android Device</a></li>
+            <li><a href="#testing-the-setup">Testing the Setup</a></li>
+          </ul>
+        </li>
+        <li><a href="#workflow-scripts">Workflow Scripts</a>
+          <ul>
+            <li><a href="#start-frida-server">Start frida-server</a></li>
+            <li><a href="#kill-frida-server">Kill frida-server</a></li>
+            <li><a href="#example">Example</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
