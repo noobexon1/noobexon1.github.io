@@ -1,23 +1,23 @@
 +++
 title = "Frida on Android 0x2 - Hooking Native Libraries"
 date = 2026-04-10
-draft = true
+draft = false
 tags = ["Frida", "Android", "Native", "Hooking", "Frida on Android"]
 image = "/images/logos/frida_on_android_logo.png"
 +++
 
 
-In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`. I created a demo application to demonstrate the issues that can arise from doing things wrong, and explain why and how the method I'm using solves them.
+In this part of the **Frida on Android** series, I'll show you how to **properly** hook functions from Android native libraries using `Frida`. I created a demo application to demonstrate the issues that can arise from doing things wrong, and I'll explain why and how the method I'm using solves them.
 
 ## Demo App Overview
 
 The demo application's source code can be found at the [GitHub repository](https://github.com/noobexon1/NativeExample). You can clone and build the application yourself, or you can simply download the prebuilt `APK` file from the repository's [releases](https://github.com/noobexon1/NativeExample/releases/tag/demo) page.
 
-Install it on your device, run it once or twice, and let's breifly go over the code.
+Install it on your device, run it once or twice, and let's briefly go over the code.
 
 ### `nativeexample.cpp`
 
-This is the native code of the application. Compiled into a native library named `"nativeexample.so"`.
+This is the native code of the application. Compiled into a native library named `"libnativeexample.so"`.
 
 #### Code
 
@@ -77,15 +77,15 @@ public class MainActivity extends AppCompatActivity {
 #### Flow
 
 1. App starts.
-2. Native library `nativeexample.so` is loaded.
-3. Boolean native function `should_say_hello()` is called from `nativeexample.so`.
+2. Native library `libnativeexample.so` is loaded.
+3. Boolean native function `should_say_hello()` is called from `libnativeexample.so`.
 4. Based on the return value:
-- `true` Returned  -> Shows the message `"Hello from native!"` in a `Toast`.
-- `false` Returned -> Shows the message `"Nope!"` in a `Toast`. The application is also immediately killed.
+    - `true` Returned  -> Shows the message `"Hello from native!"` in a `Toast`.
+    - `false` Returned -> Shows the message `"Nope!"` in a `Toast`. The application is also immediately killed.
 
 ## Goal
 
-As things stands now, the function `should_say_hello()` always returns `false`, making the app immediately kill itself.
+As things stand now, the function `should_say_hello()` always returns `false`, making the app immediately kill itself.
 
 Our goal is to use `Frida` to hook said function, so that it returns `true`. If we manage to do that, a different message will be shown and the app won't kill itself on launch.
 
@@ -96,19 +96,18 @@ To hook a function from a native library, we need to supply `Frida` with two pie
 1. The memory base address where the native library is loaded.
 2. The offset of the target function from that base address.
 
-Why? because `Frida` must know the exact place where it needs to install the hook. That exact place is the absolute memory address of the function. To get the absolute memory address of the function, we can compute the following:
+Why? Because `Frida` must know the exact place where it needs to install the hook. That exact place is the absolute memory address of the function. To get the absolute memory address of the function, we can compute the following:
 
 `[func_absolute_addr] = [lib_base_addr] + [func_offset_from_base]`
 
-Lucky for us, `Frida` can enumerate the application's memory map at runtime and give us the base address of the library for free. Therfore, all that remains for us to do is find The offset of the function from the native library base address and we are set.
+Lucky for us, `Frida` can enumerate the application's memory map at runtime and give us the base address of the library for free. Therefore, all that remains for us to do is find the offset of the function from the native library base address and we are set.
 
 ### Finding the Offset
 
-To find the offset, your can use your preferred disassembler or decompiler to explore `nativeexample.so`:
+To find the offset, you can use your preferred disassembler or decompiler to explore `libnativeexample.so`:
 
 1. Open a terminal and navigate to the folder in which you downloaded the `apk` file:
 
-<!-- ![frida_server_1](/images/screenshots/hooking_native_functions/offset_1.png) -->
 <img src="/images/screenshots/hooking_native_functions/offset_1.png" width="100%">
 
 2. Decompile it using [apktool](https://apktool.org/). You should see an output folder:
@@ -145,7 +144,7 @@ To find the offset, your can use your preferred disassembler or decompiler to ex
 
 ## First Hook Attempt (Fail)
 
-Now that we have the offset of the target function from the base address of the native library (`0x4668`), we can try and plug in our results to a generic native hook pattern.
+Now that we have the offset of the target function from the base address of the native library (`0x4668`), we can try plugging our results into a generic native hook pattern.
 
 ### Generic Native Hook Pattern
 
@@ -165,7 +164,7 @@ The following is my common pattern to hook a native function using `Frida`:
         console.log(`[+] Hook installed for [${functionName}]`);
         Interceptor.attach(targetAddr, {
             onEnter: function (args) { 
-                console.log(`-> enetered [${functionName}] at [${targetAddr}]`);
+                console.log(`-> entered [${functionName}] at [${targetAddr}]`);
 
                 // Your code goes here...
             }, 
@@ -197,7 +196,7 @@ const functionOffset = "0x4668"; // <-- The offset we just found
 ...
 ```
 
-2. We ask `Frida` to find the native library from the application's memory map at runtime. If succesful, we perform the calculation of adding the target function's offset to the module base address to get the function's absolute memory address. 
+2. We ask `Frida` to find the native library from the application's memory map at runtime. If successful, we perform the calculation of adding the target function's offset to the module base address to get the function's absolute memory address. 
 
 ```Javascript
 ...
@@ -213,7 +212,7 @@ const module = Process.findModuleByName(moduleName);
 ...
 Interceptor.attach(targetAddr, {
     onEnter: function (args) { 
-        console.log(`-> enetered [${functionName}] at [${targetAddr}]`);
+        console.log(`-> entered [${functionName}] at [${targetAddr}]`);
 
         // Your code goes here...
     }, 
@@ -232,13 +231,13 @@ Interceptor.attach(targetAddr, {
 
 All that is left to do is run the script on the target application and see if it works.
 
-1. In the same folder where you put the `apk`, crate a file named `script.js` and paste our `Frida` code snippet in it:
+1. In the same folder where you put the `apk`, create a file named `script.js` and paste our `Frida` code snippet in it:
 
 <a href="/images/screenshots/hooking_native_functions/first_hook_1.png" target="_blank">
   <img src="/images/screenshots/hooking_native_functions/first_hook_1.png" width="100%">
 </a>
 
-2. Run `frida-server` if you hadn't already:
+2. Run `frida-server` if you haven't already:
 
 <img src="/images/screenshots/hooking_native_functions/first_hook_2.png" width="100%">
 
@@ -257,7 +256,7 @@ frida-ps -Uai
 ```shell
 frida -U -f com.noobexon.nativeexample -l script.js
 ```
-As you may have already guessed from this post's titles, our script fails. But why?
+As you may have already guessed from this section's title, our script fails. But why?
 
 <img src="/images/screenshots/hooking_native_functions/first_hook_4.png" width="100%">
 
@@ -273,7 +272,7 @@ In fact, if we take a closer look at our code in `script.js`, we can see that th
 
 <img src="/images/screenshots/hooking_native_functions/first_hook_6.png" width="100%">
 
-And if we zoom further in on the issue, we can see that it stemed from this part of the code:
+And if we zoom further in on the issue, we can see that it stemmed from this part of the code:
 
 ```javascript
 ...
@@ -286,19 +285,19 @@ if (module != null) {
 ...
 ```
 
-This means `Frida` couldn't find the native library in memory and therfore returned `null`... But why? After all, if we run the application without `Frida`, then we do see that everything works perfectly, so the native library must have beed loaded **at some point**, right?
+This means `Frida` couldn't find the native library in memory and therefore returned `null`... But why? After all, if we run the application without `Frida`, then we do see that everything works perfectly, so the native library must have been loaded **at some point**, right?
 
-And that is exactly the problem here. `Frida` is fast. Very fast. The moment we run the command in our shell, it immediately tries to install the hook as fast as possible, even before the application had a chance to load the native library to memory, **And `Frida` can't find the library in memory if it hasn't been loaded yet.**
+And that is exactly the problem here. `Frida` is fast. Very fast. The moment we run the command in our shell, it immediately tries to install the hook as fast as possible, even before the application had a chance to load the native library to memory, **and `Frida` can't find the library in memory if it hasn't been loaded yet.**
 
-So what can we do?..
+So what can we do?...
 
-Well, our problem is in fact a **timing issue**. `Frida` attempts to hook the native library before it has been loaded to memory, and therfore fails. If we can somehow tell `Frida` **when** it needs to install the hook, then our problems will be solved. And that is exactly what we are going to do!
+Well, our problem is in fact a **timing issue**. `Frida` attempts to hook the native library before it has been loaded to memory, and therefore fails. If we can somehow tell `Frida` **when** it needs to install the hook, then our problems will be solved. And that is exactly what we are going to do!
 
 ### The solution
 
-How can we let `Frida` know for sure that the library is loaded and that its now ok to install the hook? There are many solutions out there, but most of them are based on busy-wait which has many downsides (Making `Frida` constantly check the memory map every couple milliseconds untill it confirms that the target library has been loaded to memory).
+How can we let Frida know for sure that the library is loaded and that it's now ok to install the hook? There are many solutions out there, but most of them are based on busy-waiting -- constantly polling the memory map every few milliseconds until the target library appears. This works only sometimes, and it's wasteful and fragile.
 
-We will take a different approach. To know **when** our target library has been loaded to memory, we can hook the function the actually loads libraries to memory. This function is called `android_dlopen_ext` and it takes the path of the library to be loaded as its first argument.
+We will take a different approach. To know **when** our target library has been loaded to memory, we can hook the function that actually loads libraries to memory. This function is called `android_dlopen_ext` and it takes the path of the library to be loaded as its first argument.
 
 Modify the contents of `script.js` with the following and run the same command:
 
@@ -320,7 +319,7 @@ This snippet will print every library being dynamically loaded:
 
 <img src="/images/screenshots/hooking_native_functions/explain_1.png" width="100%">
 
-Therfore, we can use the following hook as a mechanisem to let `Frida` know **when** to instal the hook:
+Therefore, we can use the following hook as a mechanism to let `Frida` know **when** to install the hook:
 
 ```javascript
 (function () {
@@ -349,14 +348,14 @@ Therfore, we can use the following hook as a mechanisem to let `Frida` know **wh
 })();
 ```
 
-Modify the contents of `script.js` to include the above snippet, and run. The script prints exactly when is the time that the target library has been loaded:
+Modify the contents of `script.js` to include the above snippet, and run. The script tells us exactly when the target library has been loaded.
 
 <img src="/images/screenshots/hooking_native_functions/explain_2.png" width="100%">
 
 
 ## Second Attempt (Success)
 
-Now that we figured out the solution to the timing problem, all we have to do is take our original script and compose it over our timing mechanism
+Now that we figured out the solution to the timing problem, all we have to do is take our original script and compose it over our timing mechanism:
 
 <a href="/images/screenshots/hooking_native_functions/second_hook_1.png" target="_blank">
   <img src="/images/screenshots/hooking_native_functions/second_hook_1.png" width="100%">
@@ -393,7 +392,7 @@ Now that we figured out the solution to the timing problem, all we have to do is
                             console.log(`[+] Hook installed for [${functionName}]`);
                             Interceptor.attach(targetAddr, {
                                 onEnter: function (args) { 
-                                    console.log(`-> enetered [${functionName}] at [${targetAddr}]`);
+                                    console.log(`-> entered [${functionName}] at [${targetAddr}]`);
 
                                     // Your code goes here...
                                 }, 
@@ -477,7 +476,7 @@ As expected, everything works now and the app no longer crashes!
         console.log(`[+] Hook installed for [${functionName}]`);
         Interceptor.attach(targetAddr, {
             onEnter: function (args) { 
-                console.log(`-> enetered [${functionName}] at [${targetAddr}]`);
+                console.log(`-> entered [${functionName}] at [${targetAddr}]`);
 
                 // Your code goes here...
 
