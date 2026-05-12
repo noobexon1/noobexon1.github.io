@@ -2,144 +2,144 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:1313/</loc>
+    <loc>https://noobexon1.github.io/</loc>
     <lastmod>2026-04-10T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/"/>
+               href="https://noobexon1.github.io/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/tags/.zshrc/</loc>
-    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/tags/.zshrc/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/tags/android/</loc>
-    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/tags/android/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/tags/frida/</loc>
-    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/tags/frida/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/tags/frida-on-android/</loc>
-    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/tags/frida-on-android/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/posts/frida_on_android_setup_post/</loc>
+    <loc>https://noobexon1.github.io/about/</loc>
     <lastmod>2026-04-10T00:00:00+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/posts/frida_on_android_setup_post/"/>
+               href="https://noobexon1.github.io/about/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/tags/frida-server/</loc>
+    <loc>https://noobexon1.github.io/tags/android/</loc>
     <lastmod>2026-04-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/tags/frida-server/"/>
+               href="https://noobexon1.github.io/tags/android/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/posts/</loc>
+    <loc>https://noobexon1.github.io/tags/frida/</loc>
+    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/tags/frida/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/tags/frida-on-android/</loc>
+    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/tags/frida-on-android/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/</loc>
+    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/tags/hooking/</loc>
+    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/tags/hooking/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/tags/native/</loc>
+    <lastmod>2026-04-10T00:00:00+00:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/tags/native/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/posts/</loc>
     <lastmod>2026-04-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/posts/"/>
+               href="https://noobexon1.github.io/posts/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/tags/</loc>
+    <loc>https://noobexon1.github.io/tags/</loc>
     <lastmod>2026-04-10T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/tags/"/>
+               href="https://noobexon1.github.io/tags/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/about/</loc>
-    <lastmod>2026-04-03T11:14:49+03:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/about/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/</loc>
-    <lastmod>2026-04-03T00:00:00+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link
-               rel="alternate"
-               hreflang="en"
-               href="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/"/>
-  </url>
-  <url>
-    <loc>http://localhost:1313/tags/hooking/</loc>
+    <loc>https://noobexon1.github.io/tags/.zshrc/</loc>
     <lastmod>2026-04-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/tags/hooking/"/>
+               href="https://noobexon1.github.io/tags/.zshrc/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/tags/native/</loc>
+    <loc>https://noobexon1.github.io/posts/frida_on_android_setup_post/</loc>
+    <lastmod>2026-04-03T00:00:00+00:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link
+               rel="alternate"
+               hreflang="en"
+               href="https://noobexon1.github.io/posts/frida_on_android_setup_post/"/>
+  </url>
+  <url>
+    <loc>https://noobexon1.github.io/tags/frida-server/</loc>
     <lastmod>2026-04-03T00:00:00+00:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/tags/native/"/>
+               href="https://noobexon1.github.io/tags/frida-server/"/>
   </url>
   <url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>https://noobexon1.github.io/categories/</loc>
     
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
     <xhtml:link
                rel="alternate"
                hreflang="en"
-               href="http://localhost:1313/categories/"/>
+               href="https://noobexon1.github.io/categories/"/>
   </url>
   
 </urlset>

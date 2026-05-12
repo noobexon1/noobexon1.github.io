@@ -1,5 +1,5 @@
 +++
-title = "Frida on Android 0x2 - Hooking Native Libraries"
+title = "Frida on Android 0x1 - Hooking Native Libraries"
 date = 2026-04-10
 draft = false
 tags = ["Frida", "Android", "Native", "Hooking", "Frida on Android"]

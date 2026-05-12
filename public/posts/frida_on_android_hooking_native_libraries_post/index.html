@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" class="h-full">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,7 +21,7 @@
   
   window.MANA_LANG_PREFIXES = ['en'];
 </script>
-<title>Frida on Android 0x2 - Hooking Native Libraries | </title>
+<title>Frida on Android 0x1 - Hooking Native Libraries | </title>
 <meta
   name="description"
   content="
@@ -38,30 +38,30 @@
 
 
 
-<link rel="canonical" href="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/">
+<link rel="canonical" href="https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/">
 
 
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/"><link rel="alternate" hreflang="x-default" href="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/">
+<link rel="alternate" hreflang="en" href="https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/"><link rel="alternate" hreflang="x-default" href="https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/">
 
 
 <meta name="robots" content="index, follow">
 
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en">
-<meta property="og:title" content="Frida on Android 0x2 - Hooking Native Libraries | ">
+<meta property="og:title" content="Frida on Android 0x1 - Hooking Native Libraries | ">
 <meta property="og:description" content="In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …">
-<meta property="og:url" content="http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/">
-<meta property="og:site_name" content=""><meta property="og:image" content="http://localhost:1313/images/logos/frida_on_android_logo.png">
-  <meta property="og:image:alt" content="Frida on Android 0x2 - Hooking Native Libraries | ">
+<meta property="og:url" content="https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/">
+<meta property="og:site_name" content=""><meta property="og:image" content="https://noobexon1.github.io/images/logos/frida_on_android_logo.png">
+  <meta property="og:image:alt" content="Frida on Android 0x1 - Hooking Native Libraries | ">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630"><meta property="article:published_time" content="2026-04-10T00:00:00Z">
   <meta
     property="article:modified_time"
     content="2026-04-10T00:00:00Z"><meta property="article:section" content="Frida"><meta property="article:tag" content="Frida"><meta property="article:tag" content="Android"><meta property="article:tag" content="Native"><meta property="article:tag" content="Hooking"><meta property="article:tag" content="Frida on Android">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Frida on Android 0x2 - Hooking Native Libraries | ">
-<meta name="twitter:description" content="In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …"><meta name="twitter:image" content="http://localhost:1313/images/logos/frida_on_android_logo.png">
-  <meta name="twitter:image:alt" content="Frida on Android 0x2 - Hooking Native Libraries | ">
+<meta name="twitter:title" content="Frida on Android 0x1 - Hooking Native Libraries | ">
+<meta name="twitter:description" content="In this part of the Frida on Android series, I&rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …"><meta name="twitter:image" content="https://noobexon1.github.io/images/logos/frida_on_android_logo.png">
+  <meta name="twitter:image:alt" content="Frida on Android 0x1 - Hooking Native Libraries | ">
 
 
 
@@ -84,7 +84,7 @@
 
   
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x2 - Hooking Native Libraries","image":"http://localhost:1313/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"http://localhost:1313/"},"timeRequired":"PT9M","url":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","wordCount":1898}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","email":"noobexon1blog@gmail.com","name":"noobexon1","sameAs":["https://github.com/noobexon1"]},"dateModified":"2026-04-10T00:00:00Z","datePublished":"2026-04-10T00:00:00Z","description":"In this part of the Frida on Android series, I\u0026rsquo;ll show you how to properly hook functions from Android native libraries using Frida. I created a demo …","headline":"Frida on Android 0x1 - Hooking Native Libraries","image":"https://noobexon1.github.io/images/logos/frida_on_android_logo.png","inLanguage":"en","keywords":["Frida","Android","Native","Hooking","Frida on Android"],"mainEntityOfPage":{"@id":"https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/","@type":"WebPage"},"publisher":{"@type":"Organization","name":"","url":"https://noobexon1.github.io/"},"timeRequired":"PT9M","url":"https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/","wordCount":1898}</script>
 
 
 
@@ -94,7 +94,7 @@
     
   
   
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"http://localhost:1313/","name":"Home","position":1},{"@type":"ListItem","item":"http://localhost:1313/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"http://localhost:1313/posts/frida_on_android_hooking_native_libraries_post/","name":"Frida on Android 0x2 - Hooking Native Libraries","position":3}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","item":"https://noobexon1.github.io/","name":"Home","position":1},{"@type":"ListItem","item":"https://noobexon1.github.io/posts/","name":"Posts","position":2},{"@type":"ListItem","item":"https://noobexon1.github.io/posts/frida_on_android_hooking_native_libraries_post/","name":"Frida on Android 0x1 - Hooking Native Libraries","position":3}]}</script>
 
 
 
@@ -320,7 +320,7 @@
     <img
       src="/images/logos/frida_on_android_logo.png"
       alt="
-        Frida on Android 0x2 - Hooking Native Libraries - Featured image
+        Frida on Android 0x1 - Hooking Native Libraries - Featured image
       "
       loading="eager"
       width="1200"
@@ -348,14 +348,14 @@
     </li>
     
     <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <span itemprop="name" class="breadcrumb-current">Frida on Android 0x2 - Hooking Native Libraries</span>
+      <span itemprop="name" class="breadcrumb-current">Frida on Android 0x1 - Hooking Native Libraries</span>
       <meta itemprop="position" content="3" />
     </li>
   </ol>
 </nav>
 
 
-        <h1 class="post-title-main">Frida on Android 0x2 - Hooking Native Libraries</h1>
+        <h1 class="post-title-main">Frida on Android 0x1 - Hooking Native Libraries</h1>
 
         
 

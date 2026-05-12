@@ -2,59 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on </title>
-    <link>http://localhost:1313/tags/</link>
+    <link>https://noobexon1.github.io/tags/</link>
     <description>Recent content in Tags on </description>
     <generator>Hugo</generator>
     <language>en</language>
     <lastBuildDate>Fri, 10 Apr 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>.Zshrc</title>
-      <link>http://localhost:1313/tags/.zshrc/</link>
-      <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/.zshrc/</guid>
-      <description></description>
-    </item>
+    <atom:link href="https://noobexon1.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Android</title>
-      <link>http://localhost:1313/tags/android/</link>
+      <link>https://noobexon1.github.io/tags/android/</link>
       <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/android/</guid>
+      <guid>https://noobexon1.github.io/tags/android/</guid>
       <description></description>
     </item>
     <item>
       <title>Frida</title>
-      <link>http://localhost:1313/tags/frida/</link>
+      <link>https://noobexon1.github.io/tags/frida/</link>
       <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/frida/</guid>
+      <guid>https://noobexon1.github.io/tags/frida/</guid>
       <description></description>
     </item>
     <item>
       <title>Frida on Android</title>
-      <link>http://localhost:1313/tags/frida-on-android/</link>
+      <link>https://noobexon1.github.io/tags/frida-on-android/</link>
       <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/frida-on-android/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Frida-Server</title>
-      <link>http://localhost:1313/tags/frida-server/</link>
-      <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/frida-server/</guid>
+      <guid>https://noobexon1.github.io/tags/frida-on-android/</guid>
       <description></description>
     </item>
     <item>
       <title>Hooking</title>
-      <link>http://localhost:1313/tags/hooking/</link>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/hooking/</guid>
+      <link>https://noobexon1.github.io/tags/hooking/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://noobexon1.github.io/tags/hooking/</guid>
       <description></description>
     </item>
     <item>
       <title>Native</title>
-      <link>http://localhost:1313/tags/native/</link>
+      <link>https://noobexon1.github.io/tags/native/</link>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://noobexon1.github.io/tags/native/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>.Zshrc</title>
+      <link>https://noobexon1.github.io/tags/.zshrc/</link>
       <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tags/native/</guid>
+      <guid>https://noobexon1.github.io/tags/.zshrc/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Frida-Server</title>
+      <link>https://noobexon1.github.io/tags/frida-server/</link>
+      <pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate>
+      <guid>https://noobexon1.github.io/tags/frida-server/</guid>
       <description></description>
     </item>
   </channel>
